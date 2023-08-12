@@ -48,6 +48,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     shooter.setFlipX(true);
     player.moveState = "idle";
     shooter.moveState = "idle";
+    player.body.setSize(player.width * 0.2, player.height * 0.3);
     new SamuraiAnimations(this, player);
     new ShooterAnimations(this, shooter);
 

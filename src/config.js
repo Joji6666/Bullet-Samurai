@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import QuickDrawBulletScene from "./scene/QuickDrawBullet/QuickDrawBulletScene";
+import GameOverScene from "./scene/GameOver/GameOverScene";
 
 const config = {
   type: Phaser.AUTO,
@@ -8,9 +9,9 @@ const config = {
   height: 800,
   physics: {
     default: "arcade",
-    arcade: {},
+    arcade: { debug: true },
   },
-  scene: [QuickDrawBulletScene],
+  scene: [QuickDrawBulletScene, GameOverScene],
 };
 
 export default new Phaser.Game(config);

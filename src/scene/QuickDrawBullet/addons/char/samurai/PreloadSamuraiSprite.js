@@ -14,5 +14,10 @@ export default class PreloadSamuraiSprite {
       frameWidth: 200,
       frameHeight: 200,
     });
+
+    scene.load.spritesheet("slash_hit", "asset/effect/slash_hit_3.png", {
+      frameWidth: 56,
+      frameHeight: 23,
+    });
   }
 }
