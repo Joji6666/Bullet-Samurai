@@ -92,6 +92,7 @@ export default class SamuraiAnimations {
           player.anims.play("samurai_idle", true);
           player.moveState = "idle";
           scene.isCoolDown = true;
+
           const progressBarMaxWidth = progressBarWidth;
           let progressBarCurrentWidth = 0;
           const progressInterval = attackCooldown / 100; // 1% 당 시간 간격 계산

@@ -12,6 +12,7 @@ export function hitBullet(scene, player, bulletSpeed) {
     bullet.destroy();
     slashHit.on("animationcomplete-slash_hit", () => {
       slashHit.destroy();
+      scene.isBulletDestroy = true;
     });
   } else {
     bullet.destroy();
