@@ -1,19 +1,18 @@
-export function bulletFire(shooter, scene) {
-  const prevBulletParticle = scene.data.get("bulletParticle");
-  if (prevBulletParticle) {
-    prevBulletParticle.destroy();
-  }
+export function bulletFire(shooter, scene, bulletSpeed) {
+  const isBulletTime = scene.isBulletTime;
 
-  // 새로운 bulletParticle 생성
   const bulletParticle = scene.data
     .get("bullets")
     .create(shooter.x - 34, shooter.y - 17, "bullet")
     .setScale(0.4);
 
   bulletParticle.scene = scene;
-
+  bulletSpeed.value = bulletSpeed.value - 100;
   scene.data.set("bulletParticle", bulletParticle);
-  bulletParticle.setVelocityX(-4000);
+
+  bulletParticle.setVelocityX(
+    isBulletTime ? bulletSpeed.value * 0.1 : bulletSpeed.value
+  );
   bulletParticle.setSize(
     bulletParticle.width * 0.2,
     bulletParticle.height * 0.3

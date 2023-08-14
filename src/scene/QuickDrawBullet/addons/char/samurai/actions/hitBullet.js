@@ -1,6 +1,6 @@
-export function hitBullet(scene, player) {
+export function hitBullet(scene, player, bulletSpeed) {
   const bullet = scene.data.get("bulletParticle");
-
+  const shooter = scene.children.getByName("shooter");
   if (player.moveState === "attack") {
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
@@ -17,6 +17,16 @@ export function hitBullet(scene, player) {
     bullet.destroy();
     player.anims.play("samurai_death", true);
     player.moveState = "death";
+    scene.isCoolDown = false;
+    bulletSpeed.value = -3000;
+    scene.tweens.add({
+      targets: player.anims,
+      timeScale: 1,
+    });
+    scene.tweens.add({
+      targets: shooter.anims,
+      timeScale: 1,
+    });
 
     player.on("animationcomplete-samurai_death", () => {
       scene.scene.stop("quickDrawBulletScene"); // 현재 게임 씬 중단

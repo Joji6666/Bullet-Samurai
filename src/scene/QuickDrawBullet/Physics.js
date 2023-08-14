@@ -1,7 +1,7 @@
 import { hitBullet } from "./addons/char/samurai/actions/hitBullet";
 
 export default class Physics {
-  constructor(scene, player) {
+  constructor(scene, player, bulletSpeed) {
     const bullet = scene.physics.add.group({
       allowGravity: false,
     });
@@ -11,7 +11,7 @@ export default class Physics {
     scene.physics.add.overlap(
       bullet,
       player,
-      () => hitBullet(scene, player),
+      () => hitBullet(scene, player, bulletSpeed),
       null,
       scene
     );

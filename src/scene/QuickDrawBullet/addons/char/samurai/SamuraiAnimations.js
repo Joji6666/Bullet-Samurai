@@ -1,3 +1,5 @@
+const attackCooldown = 2000;
+
 export default class SamuraiAnimations {
   constructor(scene, player) {
     scene.anims.create({
@@ -69,16 +71,27 @@ export default class SamuraiAnimations {
     );
     container.add(progressBar);
     scene.add.existing(container);
-    let lastAttackTime = 0;
-    const attackCooldown = 2000;
 
     scene.input.keyboard.on("keydown-SPACE", () => {
-      if (player.moveState !== "death") {
-        const currentTime = scene.time.now; // 현재 시간
+      const isBulletTime = scene.isBulletTime;
 
-        // 이전 공격 시간과의 차이를 계산하여 쿨타임 여부를 확인
-        if (currentTime - lastAttackTime >= attackCooldown) {
-          lastAttackTime = currentTime; // 현재 공격 시간을 저장
+      if (player.moveState !== "death" && !scene.isCoolDown) {
+        player.moveState = "attack";
+        player.anims.play("samurai_attack", true);
+
+        if (isBulletTime) {
+          setTimeout(() => {
+            player.body.setSize(player.width * 0.88, player.height * 0.4);
+          }, 700);
+        } else {
+          player.body.setSize(player.width * 0.88, player.height * 0.4);
+        }
+
+        player.on("animationcomplete-samurai_attack", () => {
+          player.body.setSize(player.width * 0.2, player.height * 0.3);
+          player.anims.play("samurai_idle", true);
+          player.moveState = "idle";
+          scene.isCoolDown = true;
           const progressBarMaxWidth = progressBarWidth;
           let progressBarCurrentWidth = 0;
           const progressInterval = attackCooldown / 100; // 1% 당 시간 간격 계산
@@ -95,18 +108,10 @@ export default class SamuraiAnimations {
             if (progressBarCurrentWidth >= progressBarMaxWidth) {
               clearInterval(progressIntervalId);
               progressBar.clear();
+              scene.isCoolDown = false;
             }
           }, progressInterval);
-
-          player.moveState = "attack";
-          player.anims.play("samurai_attack", true);
-          player.body.setSize(player.width * 0.88, player.height * 0.4);
-          player.on("animationcomplete-samurai_attack", () => {
-            player.body.setSize(player.width * 0.2, player.height * 0.3);
-            player.anims.play("samurai_idle", true);
-            player.moveState = "idle";
-          });
-        }
+        });
       }
     });
   }
