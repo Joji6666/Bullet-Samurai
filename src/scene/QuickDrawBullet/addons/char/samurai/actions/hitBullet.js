@@ -11,6 +11,11 @@ export function hitBullet(scene, player, bulletSpeed) {
 
     bullet.destroy();
     slashHit.on("animationcomplete-slash_hit", () => {
+      scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
+
+      scene.children
+        .getByName("scoreText")
+        .setText("Score: " + scene.data.get("score"));
       slashHit.destroy();
       scene.isBulletDestroy = true;
     });
@@ -31,7 +36,7 @@ export function hitBullet(scene, player, bulletSpeed) {
 
     player.on("animationcomplete-samurai_death", () => {
       scene.scene.stop("quickDrawBulletScene"); // 현재 게임 씬 중단
-      scene.scene.start("gameOverScene"); // 게임 오버 씬 시작
+      scene.scene.start("gameOverScene", { score: scene.data.get("score") }); // 게임 오버 씬 시작
     });
   }
 }

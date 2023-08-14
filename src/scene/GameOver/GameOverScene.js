@@ -5,6 +5,11 @@ export default class GameOverScene extends Phaser.Scene {
     super("gameOverScene");
   }
 
+  init(data) {
+    const score = data.score;
+    this.data.set("score", score);
+  }
+
   preload() {
     this.load.spritesheet("samurai_death", "asset/char/samurai/death.png", {
       frameWidth: 200,
@@ -27,13 +32,13 @@ export default class GameOverScene extends Phaser.Scene {
     });
     const screenWidth = this.cameras.main.width;
     const screenHeight = this.cameras.main.height;
-
+    const score = this.data.get("score");
     const text = this.add.text(screenWidth / 2, 200, "GAME OVER", {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
     });
 
-    const text2 = this.add.text(screenWidth / 2, 300, "Yoer Score:", {
+    const text2 = this.add.text(screenWidth / 2, 300, `Yoer Score:${score}`, {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
     });

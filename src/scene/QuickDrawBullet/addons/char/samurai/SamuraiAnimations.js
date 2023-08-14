@@ -73,13 +73,11 @@ export default class SamuraiAnimations {
     scene.add.existing(container);
 
     scene.input.keyboard.on("keydown-SPACE", () => {
-      const isBulletTime = scene.isBulletTime;
-
       if (player.moveState !== "death" && !scene.isCoolDown) {
         player.moveState = "attack";
         player.anims.play("samurai_attack", true);
 
-        if (isBulletTime) {
+        if (scene.isBulletTime) {
           setTimeout(() => {
             player.body.setSize(player.width * 0.88, player.height * 0.4);
           }, 700);

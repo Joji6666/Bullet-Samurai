@@ -45,6 +45,11 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     // Create Map
     new CreateMap(platforms, this);
 
+    this.data.set("score", 0);
+    this.add
+      .text(50, 100, "score: 0", { fontSize: "32px", color: "black" })
+      .setName("scoreText");
+
     const player = this.physics.add
       .sprite(100, 700, `samurai_idle`)
       .setName("player")
