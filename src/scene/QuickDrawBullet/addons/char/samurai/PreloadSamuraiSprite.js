@@ -19,5 +19,10 @@ export default class PreloadSamuraiSprite {
       frameWidth: 56,
       frameHeight: 23,
     });
+
+    scene.load.spritesheet("samurai_blood", "asset/char/samurai/blood.png", {
+      frameWidth: 66,
+      frameHeight: 66,
+    });
   }
 }

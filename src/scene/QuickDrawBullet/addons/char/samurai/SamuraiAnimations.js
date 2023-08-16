@@ -1,8 +1,8 @@
 const attackCooldown = 2000;
-
+const progressBarColor = 0x00ff00;
 export default class SamuraiAnimations {
   constructor(scene, player) {
-    scene.anims.create({
+    scene.attackAnimation = scene.anims.create({
       key: "samurai_attack",
 
       frames: scene.anims.generateFrameNumbers(`samurai_attack`, {
@@ -54,12 +54,24 @@ export default class SamuraiAnimations {
       repeat: 0,
     });
 
+    scene.anims.create({
+      key: "blooding",
+
+      frames: scene.anims.generateFrameNumbers(`samurai_blood`, {
+        start: 0,
+        end: 27,
+      }),
+
+      frameRate: 60,
+
+      repeat: 0,
+    });
+
     player.anims.play("samurai_idle", true);
     const container = scene.add.container(player.x, player.y - 100);
     // 쿨다운 프로그레스 바에 사용할 프레임
     const progressBarWidth = 100;
     const progressBarHeight = 10;
-    const progressBarColor = 0x00ff00;
 
     const progressBar = scene.add.graphics();
     progressBar.fillStyle(progressBarColor, 1);
@@ -77,15 +89,9 @@ export default class SamuraiAnimations {
         player.moveState = "attack";
         player.anims.play("samurai_attack", true);
 
-        if (scene.isBulletTime) {
-          setTimeout(() => {
-            player.body.setSize(player.width * 0.88, player.height * 0.4);
-          }, 700);
-        } else {
-          player.body.setSize(player.width * 0.88, player.height * 0.4);
-        }
-
         player.on("animationcomplete-samurai_attack", () => {
+          console.log("attack close");
+          scene.attackAround = 0.1;
           player.body.setSize(player.width * 0.2, player.height * 0.3);
           player.anims.play("samurai_idle", true);
           player.moveState = "idle";

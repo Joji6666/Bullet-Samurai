@@ -33,12 +33,12 @@ export default class GameOverScene extends Phaser.Scene {
     const screenWidth = this.cameras.main.width;
     const screenHeight = this.cameras.main.height;
     const score = this.data.get("score");
-    const text = this.add.text(screenWidth / 2, 200, "GAME OVER", {
+    const text = this.add.text(screenWidth / 2, 100, "GAME OVER", {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
     });
 
-    const text2 = this.add.text(screenWidth / 2, 300, `Yoer Score:${score}`, {
+    const text2 = this.add.text(screenWidth / 2, 200, `Yoer Score:${score}`, {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
     });
@@ -74,7 +74,7 @@ export default class GameOverScene extends Phaser.Scene {
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
       (cam, effect) => {
         this.time.delayedCall(1000, () => {
-          this.scene.start("quickDrawBulletScene", { fadeIn: true });
+          this.scene.start("gameStartScene", { fadeIn: true });
         });
       }
     );

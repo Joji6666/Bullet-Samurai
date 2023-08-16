@@ -1,7 +1,7 @@
 export default class CreateMap {
   constructor(platforms, scene) {
-    const grond = platforms.create(400, 50, "ground").setScale(2).refreshBody();
+    const ground = platforms.create(400, 0, "ground").setScale(2).refreshBody();
 
-    scene.data.set("ground", grond);
+    scene.data.set("ground", ground);
   }
 }

@@ -10,13 +10,13 @@ import ShooterAnimations from "./addons/char/shooter/ShooterAnimations";
 import { autoBulletFire } from "./addons/char/shooter/actions/autoBulletFire";
 
 import Physics from "./Physics";
+import BulletTimeProgressBar from "./addons/BulletTimeProgressBar";
 
 const bulletSpeed = { value: -3000 };
 let nextBulletTime = 0;
 const minInterval = 2000;
 const maxInterval = 9000;
 let isCoolDown = false;
-let bulletTimeGauge = 100;
 
 export default class QuickDrawBulletScene extends Phaser.Scene {
   constructor() {
@@ -51,13 +51,13 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       .setName("scoreText");
 
     const player = this.physics.add
-      .sprite(100, 700, `samurai_idle`)
+      .sprite(100, 640, `samurai_idle`)
       .setName("player")
       .setScale(2);
     this.data.set("player", player);
 
     const shooter = this.physics.add
-      .sprite(1100, 715, `shooter_idle`)
+      .sprite(1100, 655, `shooter_idle`)
       .setName("shooter")
       .setScale(2);
     this.data.set("shooter", shooter);
@@ -71,52 +71,29 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     new Physics(this, player, bulletSpeed);
 
-    const background = this.data.get("background");
-    const ground = this.data.get("ground");
     this.isBulletTime = false;
     this.isBulletDestroy = false;
+    this.attackAround = 0.1;
 
     this.input.keyboard.on("keydown-Z", () => {
-      this.isBulletTime = !this.isBulletTime;
-      this.isBulletTime = this.isBulletTime;
+      if (this.bulletTimeProgressBarWidth > 0) {
+        this.isBulletTime = !this.isBulletTime;
+      }
+
       if (this.isBulletTime) {
         const bullet = this.data.get("bulletParticle");
         if (bullet && bullet.body?.velocity?.x) {
           bullet.setVelocityX(bulletSpeed.value * 0.1);
         }
-        player.setTint(0x808080);
-        shooter.setTint(0x808080);
-        background.setTint(0x808080);
-        ground.setTint(0x808080);
-        this.tweens.add({
-          targets: player.anims,
-          timeScale: 0.1,
-        });
-
-        this.tweens.add({
-          targets: shooter.anims,
-          timeScale: 0.1,
-        });
       } else {
         const bullet = this.data.get("bulletParticle");
-        player.clearTint();
-        shooter.clearTint();
-        background.clearTint();
-        ground.clearTint();
         if (bullet && bullet.body?.velocity?.x) {
           bullet.setVelocityX(bulletSpeed.value);
         }
-        this.tweens.add({
-          targets: player.anims,
-          timeScale: 1,
-        });
-
-        this.tweens.add({
-          targets: shooter.anims,
-          timeScale: 1,
-        });
       }
     });
+
+    new BulletTimeProgressBar(this);
   }
 
   update() {
@@ -125,25 +102,53 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const player = this.data.get("player");
     const background = this.data.get("background");
     const ground = this.data.get("ground");
+    const bulletTimeProgressBar = this.data.get("bulletTimeProgressBar");
+    const isBulletTime = this.isBulletTime;
+    const progressBarWidth = 100;
+    const progressBarHeight = 10;
 
-    if (this.isBulletDestroy) {
+    if (isBulletTime) {
+      this.attackAnimation.frameRate = 5;
+      player.setTint(0x808080);
+      shooter.setTint(0x808080);
+      background.setTint(0x808080);
+      ground.setTint(0x808080);
+
+      this.bulletTimeProgressBarWidth = this.bulletTimeProgressBarWidth -= 0.25;
+      bulletTimeProgressBar.clear();
+      bulletTimeProgressBar.fillRect(
+        -progressBarWidth / 2,
+        -progressBarHeight - 5,
+        this.bulletTimeProgressBarWidth,
+        progressBarHeight
+      );
+      if (this.bulletTimeProgressBarWidth === 0) {
+        this.isBulletTime = false;
+      }
+    }
+
+    this.tweens.add({
+      targets: shooter.anims,
+      timeScale: this.isBulletTime ? 0.1 : 1,
+    });
+
+    if (!this.isBulletTime) {
+      this.attackAnimation.frameRate = 60;
       player.clearTint();
       shooter.clearTint();
       background.clearTint();
       ground.clearTint();
+    }
 
-      this.tweens.add({
-        targets: player.anims,
-        timeScale: 1,
-      });
-
-      this.tweens.add({
-        targets: shooter.anims,
-        timeScale: 1,
-      });
-
-      this.isBulletDestroy = false;
-      this.isBulletTime = false;
+    if (player.moveState === "attack") {
+      console.log("atttaaacckkk");
+      player.body.setSize(
+        player.width * this.attackAround,
+        player.height * 0.4
+      );
+      this.attackAround = this.isBulletTime
+        ? this.attackAround + 0.0121
+        : this.attackAround + 0.15;
     }
 
     if (shooter) {
