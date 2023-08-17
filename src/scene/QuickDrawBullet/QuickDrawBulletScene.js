@@ -12,11 +12,23 @@ import { autoBulletFire } from "./addons/char/shooter/actions/autoBulletFire";
 import Physics from "./Physics";
 import BulletTimeProgressBar from "./addons/BulletTimeProgressBar";
 
-const bulletSpeed = { value: -3000 };
+const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
-const minInterval = 2000;
-const maxInterval = 9000;
+const minInterval = 3000;
+const maxInterval = 10000;
 let isCoolDown = false;
+const afterImageColors = [
+  "0xFF0000", // 빨강
+  "0xFF7F00", // 주황
+  "0xFFFF00", // 노랑
+  "0x00FF00", // 초록
+  "0x0000FF", // 파랑
+  "0x4B0082", // 남색
+  "0x9400D3", // 보라
+  "0xFF1493", // 분홍
+  "0x00CED1", // 옥색
+  "0xFFD700", // 금색
+];
 
 export default class QuickDrawBulletScene extends Phaser.Scene {
   constructor() {
@@ -31,10 +43,13 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
   }
 
   create() {
+    this.minInterval = 2000;
+    this.maxInterval = 9000;
     this.isCoolDown = isCoolDown;
     this.isBulletTime = false;
     this.isBulletDestroy = false;
     this.attackAround = 0.1;
+    this.aimOn = false;
     // Add Map image
     new AddMap(this);
 
@@ -60,6 +75,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("player", player);
     player.moveState = "idle";
     player.body.setSize(player.width * 0.2, player.height * 0.3);
+    player.setDepth(2);
     // shooter init
     const shooter = this.physics.add
       .sprite(1100, 655, `shooter_idle`)
@@ -81,21 +97,17 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       }
 
       if (this.isBulletTime) {
+        const playerAfterImage = this.data.set("playerAfterImages", []);
+
         const eyeOfRonin = this.physics.add
-          .sprite(player.x, player.y, `eye_of_ronin`)
+          .sprite(player.x + 50, player.y, `eye_of_ronin`)
           .setName("eyeOfRonin")
           .setScale(2);
+        eyeOfRonin.rotation = Phaser.Math.DegToRad(15);
+        eyeOfRonin.setDepth(1);
 
         eyeOfRonin.anims.play("eye_of_ronin", true);
         this.data.set("eyeOfRonin", eyeOfRonin);
-      }
-
-      if (!this.isBulletTime) {
-        const eyeOfRonin = this.data.get("eyeOfRonin");
-
-        if (eyeOfRonin) {
-          eyeOfRonin.destroy();
-        }
       }
     });
 
@@ -112,6 +124,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const isBulletTime = this.isBulletTime;
     const progressBarWidth = 100;
     const progressBarHeight = 10;
+    const playerAfterImages = this.data.get("playerAfterImages");
 
     if (isBulletTime) {
       const bullet = this.data.get("bulletParticle");
@@ -144,6 +157,22 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     });
 
     if (!isBulletTime) {
+      if (!this.isBulletTime) {
+        const eyeOfRonin = this.data.get("eyeOfRonin");
+
+        if (eyeOfRonin) {
+          eyeOfRonin.destroy();
+        }
+      }
+      const playerAfterImage = this.data.get("playerAfterImages");
+      if (playerAfterImage) {
+        playerAfterImage.forEach((afterImage) => {
+          afterImage.destroy();
+        });
+
+        this.data.set("playerAfterImages", []);
+      }
+
       const bullet = this.data.get("bulletParticle");
       if (bullet && bullet.body?.velocity?.x) {
         bullet.setVelocityX(bulletSpeed.value);
@@ -161,6 +190,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
         player.width * this.attackAround,
         player.height * 0.4
       );
+      // 모든 잔상 위치 및 투명도 업데이트
 
       if (isBulletTime && player.body.offset.x < 57) {
         player.isSwordOut = true;
@@ -177,6 +207,38 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       this.attackAround = this.isBulletTime
         ? this.attackAround + 0.0121
         : this.attackAround + 0.162;
+
+      if (isBulletTime) {
+        const maxAfterImages = 10;
+        const fadeSpeed = 0.1;
+
+        for (let index = 0; index < maxAfterImages; index++) {
+          if (playerAfterImages.length === 10) {
+            return;
+          }
+
+          const newAfterImage = this.physics.add
+            .sprite(player.x - index * 1.5, player.y, `samurai_idle`)
+            .setScale(2)
+            .setAlpha(0.3)
+            .setDepth(1);
+
+          playerAfterImages.push(newAfterImage);
+        }
+
+        if (playerAfterImages.length > 0) {
+          playerAfterImages.forEach((afterImage, index) => {
+            if (afterImage) {
+              afterImage.setTint(afterImageColors[index]);
+              afterImage.alpha -= fadeSpeed;
+              afterImage.anims.play("samurai_attack", true);
+              if (afterImage.alpha <= 0) {
+                afterImage.destroy();
+              }
+            }
+          });
+        }
+      }
     }
 
     if (shooter) {
@@ -184,7 +246,6 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
       if (currentTime > nextBulletTime && shooter.moveState === "idle") {
         nextBulletTime = currentTime + bulletInterval;
-
         autoBulletFire(shooter, this, bulletSpeed);
       }
     }

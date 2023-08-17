@@ -1,4 +1,4 @@
-const attackCooldown = 2000;
+const attackCooldown = 1700;
 const progressBarColor = 0x00ff00;
 export default class SamuraiAnimations {
   constructor(scene, player) {
@@ -72,34 +72,10 @@ export default class SamuraiAnimations {
 
       frames: scene.anims.generateFrameNumbers(`eye_of_ronin`, {
         start: 0,
-        end: 14,
+        end: 13,
       }),
 
-      frameRate: 60,
-
-      repeat: -1,
-    });
-    scene.anims.create({
-      key: "eye_of_ronin_1",
-
-      frames: scene.anims.generateFrameNumbers(`eye_of_ronin_1`, {
-        start: 0,
-        end: 5,
-      }),
-
-      frameRate: 10,
-
-      repeat: -1,
-    });
-    scene.anims.create({
-      key: "eye_of_ronin_2",
-
-      frames: scene.anims.generateFrameNumbers(`eye_of_ronin_2`, {
-        start: 0,
-        end: 5,
-      }),
-
-      frameRate: 15,
+      frameRate: 20,
 
       repeat: -1,
     });

@@ -32,6 +32,7 @@ export function hitBullet(scene, player, bulletSpeed) {
   } else {
     bullet.destroy();
     scene.isBulletTime = false;
+    scene.aimOn = false;
     const blood = scene.physics.add
       .sprite(player.x + 10, player.y - 10, `samurai_blood`)
       .setName("blood")
@@ -45,7 +46,7 @@ export function hitBullet(scene, player, bulletSpeed) {
     player.anims.play("samurai_death", true);
     player.moveState = "death";
     scene.isCoolDown = false;
-    bulletSpeed.value = -3000;
+    bulletSpeed.value = -2400;
     scene.tweens.add({
       targets: player.anims,
       timeScale: 1,
