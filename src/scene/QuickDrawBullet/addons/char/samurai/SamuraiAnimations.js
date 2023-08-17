@@ -15,7 +15,7 @@ export default class SamuraiAnimations {
       repeat: 0,
     });
 
-    scene.anims.create({
+    scene.samuraiIdleAnimation = scene.anims.create({
       key: "samurai_idle",
 
       frames: scene.anims.generateFrameNumbers(`samurai_idle`, {
@@ -67,6 +67,43 @@ export default class SamuraiAnimations {
       repeat: 0,
     });
 
+    scene.anims.create({
+      key: "eye_of_ronin",
+
+      frames: scene.anims.generateFrameNumbers(`eye_of_ronin`, {
+        start: 0,
+        end: 14,
+      }),
+
+      frameRate: 60,
+
+      repeat: -1,
+    });
+    scene.anims.create({
+      key: "eye_of_ronin_1",
+
+      frames: scene.anims.generateFrameNumbers(`eye_of_ronin_1`, {
+        start: 0,
+        end: 5,
+      }),
+
+      frameRate: 10,
+
+      repeat: -1,
+    });
+    scene.anims.create({
+      key: "eye_of_ronin_2",
+
+      frames: scene.anims.generateFrameNumbers(`eye_of_ronin_2`, {
+        start: 0,
+        end: 5,
+      }),
+
+      frameRate: 15,
+
+      repeat: -1,
+    });
+
     player.anims.play("samurai_idle", true);
     const container = scene.add.container(player.x, player.y - 100);
     // 쿨다운 프로그레스 바에 사용할 프레임
@@ -90,7 +127,6 @@ export default class SamuraiAnimations {
         player.anims.play("samurai_attack", true);
 
         player.on("animationcomplete-samurai_attack", () => {
-          console.log("attack close");
           scene.attackAround = 0.1;
           player.body.setSize(player.width * 0.2, player.height * 0.3);
           player.anims.play("samurai_idle", true);

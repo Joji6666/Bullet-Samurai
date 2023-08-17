@@ -46,5 +46,14 @@ export default class PreloadShooterSprite {
         frameHeight: 66,
       }
     );
+
+    scene.load.spritesheet(
+      "shooter_reload",
+      "asset/char/shooter/shooter_reload.png",
+      {
+        frameWidth: 66,
+        frameHeight: 66,
+      }
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { bulletFire } from "./bulletFire";
 
-export function autoBulletFire(shooter, scene, bulletSpeed, isBulletTime) {
+export function autoBulletFire(shooter, scene, bulletSpeed) {
   function shoot() {
     shooter.anims.play("shooter_gun_out", true);
     shooter.moveState = "gunFire";

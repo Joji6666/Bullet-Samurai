@@ -1,5 +1,25 @@
 export function bulletFire(shooter, scene, bulletSpeed) {
   const isBulletTime = scene.isBulletTime;
+  const score = scene.data.get("score");
+  const bulletStuck = Phaser.Math.Between(1, 10);
+  console.log(score, "score", bulletStuck, "bulletStuck");
+  if (score > 100 && bulletStuck === 5) {
+    const stuckText = scene.add.text(shooter.x, shooter.y - 100, "stuck", {
+      fontSize: "16px",
+      color: "black",
+    });
+    shooter.anims.play("shooter_reload", true);
+    shooter.on("animationcomplete-shooter_reload", () => {
+      shooter.anims.play("shooter_idle", true);
+      shooter.moveState = "idle";
+      shooter.removeAllListeners();
+    });
+
+    setTimeout(() => {
+      stuckText.destroy();
+    }, 1000);
+    return;
+  }
 
   const bulletParticle = scene.data
     .get("bullets")

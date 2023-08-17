@@ -1,8 +1,7 @@
 export function hitBullet(scene, player, bulletSpeed) {
   const bullet = scene.data.get("bulletParticle");
   const shooter = scene.children.getByName("shooter");
-  if (player.moveState === "attack") {
-    console.log(player, "player", player.body, "player X");
+  if (player.moveState === "attack" && player.isSwordOut) {
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
       .setName("slash")

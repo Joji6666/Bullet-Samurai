@@ -8,6 +8,10 @@ export default class GameStartScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.spritesheet("samurai_fall", "asset/char/samurai/fall.png", {
+      frameWidth: 200,
+      frameHeight: 200,
+    });
     this.load.image("title", "asset/text/title.png");
     this.load.image("title_slash", "asset/text/title_slash.png");
     this.load.image("game_start", "asset/text/gameStart.png");
@@ -26,6 +30,19 @@ export default class GameStartScene extends Phaser.Scene {
   }
 
   create() {
+    this.anims.create({
+      key: "samurai_fall",
+
+      frames: this.anims.generateFrameNumbers(`samurai_fall`, {
+        start: 0,
+        end: 1,
+      }),
+
+      frameRate: 30,
+
+      repeat: -1,
+    });
+
     const screenWidth = this.cameras.main.width;
 
     this.anims.create({
@@ -81,6 +98,18 @@ export default class GameStartScene extends Phaser.Scene {
 
         slash.destroy();
       }, 100);
+
+      setTimeout(() => {
+        const samurai = this.physics.add
+          .sprite(100, -100, `samurai_fall`)
+          .setName("samurai")
+          .setScale(2);
+
+        samurai.anims.play("samurai_fall", true);
+
+        samurai.setVelocityX(50);
+        samurai.setVelocityY(650);
+      }, 500);
 
       setTimeout(() => {
         this.cameras.main.fadeOut(1000, 0, 0, 0);

@@ -24,5 +24,30 @@ export default class PreloadSamuraiSprite {
       frameWidth: 66,
       frameHeight: 66,
     });
+
+    scene.load.spritesheet(
+      "eye_of_ronin",
+      "asset/char/samurai/eyeOfRonin.png",
+      {
+        frameWidth: 66,
+        frameHeight: 51,
+      }
+    );
+    scene.load.spritesheet(
+      "eye_of_ronin_1",
+      "asset/char/samurai/eye_of_ronin1.png",
+      {
+        frameWidth: 32,
+        frameHeight: 37,
+      }
+    );
+    scene.load.spritesheet(
+      "eye_of_ronin_2",
+      "asset/char/samurai/eye_of_ronin2.png",
+      {
+        frameWidth: 32,
+        frameHeight: 37,
+      }
+    );
   }
 }

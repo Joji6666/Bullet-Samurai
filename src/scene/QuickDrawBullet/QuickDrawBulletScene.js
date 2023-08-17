@@ -32,7 +32,9 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
   create() {
     this.isCoolDown = isCoolDown;
-
+    this.isBulletTime = false;
+    this.isBulletDestroy = false;
+    this.attackAround = 0.1;
     // Add Map image
     new AddMap(this);
 
@@ -50,30 +52,28 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       .text(50, 100, "score: 0", { fontSize: "32px", color: "black" })
       .setName("scoreText");
 
+    // player init
     const player = this.physics.add
       .sprite(100, 640, `samurai_idle`)
       .setName("player")
       .setScale(2);
     this.data.set("player", player);
-
+    player.moveState = "idle";
+    player.body.setSize(player.width * 0.2, player.height * 0.3);
+    // shooter init
     const shooter = this.physics.add
       .sprite(1100, 655, `shooter_idle`)
       .setName("shooter")
       .setScale(2);
     this.data.set("shooter", shooter);
     shooter.setFlipX(true);
-    player.moveState = "idle";
+
     shooter.moveState = "idle";
 
-    player.body.setSize(player.width * 0.2, player.height * 0.3);
     new SamuraiAnimations(this, player);
     new ShooterAnimations(this, shooter);
 
     new Physics(this, player, bulletSpeed);
-
-    this.isBulletTime = false;
-    this.isBulletDestroy = false;
-    this.attackAround = 0.1;
 
     this.input.keyboard.on("keydown-Z", () => {
       if (this.bulletTimeProgressBarWidth > 0) {
@@ -81,14 +81,20 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       }
 
       if (this.isBulletTime) {
-        const bullet = this.data.get("bulletParticle");
-        if (bullet && bullet.body?.velocity?.x) {
-          bullet.setVelocityX(bulletSpeed.value * 0.1);
-        }
-      } else {
-        const bullet = this.data.get("bulletParticle");
-        if (bullet && bullet.body?.velocity?.x) {
-          bullet.setVelocityX(bulletSpeed.value);
+        const eyeOfRonin = this.physics.add
+          .sprite(player.x, player.y, `eye_of_ronin`)
+          .setName("eyeOfRonin")
+          .setScale(2);
+
+        eyeOfRonin.anims.play("eye_of_ronin", true);
+        this.data.set("eyeOfRonin", eyeOfRonin);
+      }
+
+      if (!this.isBulletTime) {
+        const eyeOfRonin = this.data.get("eyeOfRonin");
+
+        if (eyeOfRonin) {
+          eyeOfRonin.destroy();
         }
       }
     });
@@ -108,11 +114,16 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const progressBarHeight = 10;
 
     if (isBulletTime) {
+      const bullet = this.data.get("bulletParticle");
+      if (bullet && bullet.body?.velocity?.x) {
+        bullet.setVelocityX(bulletSpeed.value * 0.1);
+      }
       this.attackAnimation.frameRate = 5;
-      player.setTint(0x808080);
-      shooter.setTint(0x808080);
-      background.setTint(0x808080);
-      ground.setTint(0x808080);
+
+      player.setTint(0x802080);
+      shooter.setTint(0x404040);
+      background.setTint(0x404040);
+      ground.setTint(0x404040);
 
       this.bulletTimeProgressBarWidth = this.bulletTimeProgressBarWidth -= 0.25;
       bulletTimeProgressBar.clear();
@@ -129,11 +140,16 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     this.tweens.add({
       targets: shooter.anims,
-      timeScale: this.isBulletTime ? 0.1 : 1,
+      timeScale: isBulletTime ? 0.1 : 1,
     });
 
-    if (!this.isBulletTime) {
+    if (!isBulletTime) {
+      const bullet = this.data.get("bulletParticle");
+      if (bullet && bullet.body?.velocity?.x) {
+        bullet.setVelocityX(bulletSpeed.value);
+      }
       this.attackAnimation.frameRate = 60;
+
       player.clearTint();
       shooter.clearTint();
       background.clearTint();
@@ -141,14 +157,26 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     }
 
     if (player.moveState === "attack") {
-      console.log("atttaaacckkk");
       player.body.setSize(
         player.width * this.attackAround,
         player.height * 0.4
       );
+
+      if (isBulletTime && player.body.offset.x < 57) {
+        player.isSwordOut = true;
+      }
+
+      if (player.body.offset.x < 73 && !isBulletTime) {
+        player.isSwordOut = true;
+      }
+
+      if (player.body.offset.x > 75) {
+        player.isSwordOut = false;
+      }
+
       this.attackAround = this.isBulletTime
         ? this.attackAround + 0.0121
-        : this.attackAround + 0.15;
+        : this.attackAround + 0.162;
     }
 
     if (shooter) {

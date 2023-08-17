@@ -65,6 +65,19 @@ export default class ShooterAnimations {
       repeat: 0,
     });
 
+    scene.anims.create({
+      key: "shooter_reload",
+
+      frames: scene.anims.generateFrameNumbers(`shooter_reload`, {
+        start: 0,
+        end: 16,
+      }),
+
+      frameRate: 20,
+
+      repeat: 0,
+    });
+
     shooter.anims.play("shooter_idle", true);
   }
 }
