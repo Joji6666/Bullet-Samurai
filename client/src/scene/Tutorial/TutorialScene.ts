@@ -39,6 +39,8 @@ export default class TutorialScene extends Phaser.Scene {
       }
     );
 
+    text.setOrigin(0.5);
+
     this.input.keyboard.once("keydown-SPACE", () => {
       this.cameras.main.fadeOut(1000, 0, 0, 0);
     });

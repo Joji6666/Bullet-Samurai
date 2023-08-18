@@ -1,37 +1,37 @@
-import { db } from "../../../firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 let enterText = "";
 
 const LETTERS = [
-  { key: "a", value: "A-key" },
-  { key: "b", value: "B-key" },
-  { key: "c", value: "C-key" },
-  { key: "d", value: "D-key" },
-  { key: "e", value: "E-key" },
-  { key: "f", value: "F-key" },
-  { key: "g", value: "G-key" },
-  { key: "h", value: "H-key" },
-  { key: "i", value: "I-key" },
-  { key: "j", value: "J-key" },
-  { key: "k", value: "K-key" },
-  { key: "l", value: "L-key" },
-  { key: "m", value: "M-key" },
+  { key: "a", value: "akey" },
+  { key: "b", value: "bkey" },
+  { key: "c", value: "ckey" },
+  { key: "d", value: "dkey" },
+  { key: "e", value: "ekey" },
+  { key: "f", value: "fkey" },
+  { key: "g", value: "gkey" },
+  { key: "h", value: "hkey" },
+  { key: "i", value: "ikey" },
+  { key: "j", value: "jkey" },
+  { key: "k", value: "kkey" },
+  { key: "l", value: "lkey" },
+  { key: "m", value: "mkey" },
 ];
 
 const LETTERS2 = [
-  { key: "n", value: "N-key" },
-  { key: "o", value: "O-key" },
-  { key: "p", value: "P-key" },
-  { key: "q", value: "Q-key" },
-  { key: "r", value: "R-key" },
-  { key: "s", value: "S-key" },
-  { key: "t", value: "T-key" },
-  { key: "u", value: "U-key" },
-  { key: "v", value: "V-key" },
-  { key: "w", value: "W-key" },
-  { key: "x", value: "X-key" },
-  { key: "y", value: "Y-key" },
-  { key: "z", value: "Z-key" },
+  { key: "n", value: "nkey" },
+  { key: "o", value: "okey" },
+  { key: "p", value: "pkey" },
+  { key: "q", value: "qkey" },
+  { key: "r", value: "rkey" },
+  { key: "s", value: "skey" },
+  { key: "t", value: "tkey" },
+  { key: "u", value: "ukey" },
+  { key: "v", value: "vkey" },
+  { key: "w", value: "wkey" },
+  { key: "x", value: "xkey" },
+  { key: "y", value: "ykey" },
+  { key: "z", value: "zkey" },
 ];
 
 export default class EnterRankScene extends Phaser.Scene {
@@ -199,7 +199,7 @@ export default class EnterRankScene extends Phaser.Scene {
       if (focusBoxSpriteKey !== null) {
         if (enterText.length < 3) {
           enterText = enterText + focusBoxSpriteKey;
-          textValue.setText(enterText);
+          textValue.setText(enterText.toUpperCase());
         }
       }
     });
@@ -207,7 +207,7 @@ export default class EnterRankScene extends Phaser.Scene {
       if (enterText.length === 3) {
         addDoc(collection(db, "ranking"), {
           score,
-          name: enterText,
+          name: enterText.toUpperCase(),
         }).then((result) => {
           this.cameras.main.fadeOut(1000, 0, 0, 0);
         });

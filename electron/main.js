@@ -14,8 +14,8 @@ const createWindow = () => {
     width: 1920,
     height: 1080,
     webPreferences: {
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      nodeIntegration: true,
+      contextIsolation: false,
       enableRemoteModule: true,
       preload: path.join(__dirname, "preload.js"),
       webSecurity: false,

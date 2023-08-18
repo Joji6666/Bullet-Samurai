@@ -5,7 +5,8 @@ import {
   orderBy,
   getDocs,
 } from "firebase/firestore";
-import { db } from "../../../firebase";
+import { db } from "../../firebase";
+
 let rankingData: any[] = [];
 let rankingTexts: Phaser.GameObjects.Text[] = []; // 텍스트 객체들을 저장할 배열
 
@@ -42,9 +43,36 @@ export default class RankingScene extends Phaser.Scene {
       });
       rankingTexts.push(rankingText);
     }
+
+    const text = this.add.text(
+      screenWidth / 2,
+      600,
+      "Press Space to Continue",
+      {
+        fontSize: "32px",
+        align: "center", // 텍스트를 가운데 정렬
+      }
+    );
+
+    text.setOrigin(0.5);
+    this.input.keyboard.on("keydown-SPACE", () => {
+      this.cameras.main.fadeOut(1000, 0, 0, 0);
+    });
+
+    this.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+      () => {
+        this.time.delayedCall(1000, () => {
+          this.scene.start("gameStartScene", {
+            fadeIn: true,
+          });
+        });
+      }
+    );
   }
 
   update() {
+    console.log(rankingData, "data");
     if (rankingData.length > 0) {
       rankingData.forEach((data, index) => {
         if (index < rankingTexts.length) {

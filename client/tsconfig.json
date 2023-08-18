@@ -15,5 +15,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./src/**/*", "firebase.ts"]
+  "include": ["./src/**/*", "src/firebase.ts"]
 }
