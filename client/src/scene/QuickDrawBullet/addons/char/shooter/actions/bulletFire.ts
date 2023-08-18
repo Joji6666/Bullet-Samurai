@@ -7,7 +7,7 @@ export function bulletFire(
   const score = scene.data.get("score");
   const bulletStuck = Phaser.Math.Between(1, 10);
 
-  if (score > 1000 && bulletStuck === 5) {
+  if (score > 700 && bulletStuck === 5) {
     const stuckText = scene.add.text(shooter.x, shooter.y - 100, "stuck", {
       fontSize: "16px",
       color: "black",

@@ -1,5 +1,5 @@
 const attackCooldown = 1700;
-const progressBarColor = 0x00ff00;
+const progressBarColor = 0xff0000;
 export default class SamuraiAnimations {
   constructor(scene: any, player: any) {
     const attackAnimation = scene.anims.create({

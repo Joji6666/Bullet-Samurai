@@ -7,7 +7,7 @@ export default class TutorialScene extends Phaser.Scene {
     this.load.image("space", "asset/icon/space.png");
     this.load.image("z_key", "asset/icon/zkey.png");
     this.load.image("attack", "asset/text/attack.png");
-    this.load.image("eye_of_ronin", "asset/text/eye_of_ronin.png");
+    this.load.image("eye_of_ronin_text", "asset/text/eye_of_ronin.png");
     this.load.image("Hills_01", "asset/background/Hills_01.png");
     this.load.image("Hills_02", "asset/background/Hills_02.png");
     this.load.image("how_to_play", "asset/text/howToPlay.png");
@@ -26,7 +26,7 @@ export default class TutorialScene extends Phaser.Scene {
       .image(space.x + 150, space.y, "attack")
       .setScale(0.5);
     const eyeOfRonin = this.add
-      .image(zKey.x + 150, zKey.y, "eye_of_ronin")
+      .image(zKey.x + 150, zKey.y, "eye_of_ronin_text")
       .setScale(0.5);
 
     const text = this.add.text(

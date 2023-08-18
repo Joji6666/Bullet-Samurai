@@ -18,6 +18,7 @@ export default class GameStartScene extends Phaser.Scene {
     });
     this.load.image("title", "asset/text/title.png");
     this.load.image("title_slash", "asset/text/title_slash.png");
+    this.load.image("ranking", "asset/text/ranking.png");
     this.load.image("game_start", "asset/text/gameStart.png");
     this.load.image("how_to_play", "asset/text/howToPlay.png");
     this.load.image("katana", "asset/icon/katana.png");
@@ -67,6 +68,9 @@ export default class GameStartScene extends Phaser.Scene {
     const gameStart = this.add
       .image(screenWidth / 2 + 20, 500, "game_start")
       .setScale(1);
+    const ranking = this.add
+      .image(screenWidth / 2, 650, "ranking")
+      .setScale(0.5);
     const howToPlay = this.add
       .image(screenWidth / 2 + 25, 570, "how_to_play")
       .setScale(1);
@@ -78,7 +82,7 @@ export default class GameStartScene extends Phaser.Scene {
     this.input.keyboard.once("keydown-SPACE", () => {
       if (selectedMenu === 0) {
         const slash = this.physics.add
-          .sprite(title.x, title.y, `slash`)
+          .sprite(title.x, title.y - 550, `slash`)
           .setName("slash")
           .setScale(12);
         slash.rotation = Phaser.Math.DegToRad(45);
@@ -134,6 +138,10 @@ export default class GameStartScene extends Phaser.Scene {
           if (selectedMenu === 1) {
             this.scene.start("tutorialScene", { fadeIn: true });
           }
+
+          if (selectedMenu === 2) {
+            this.scene.start("rankingScene", { fadeIn: true });
+          }
         });
       }
     );
@@ -144,9 +152,20 @@ export default class GameStartScene extends Phaser.Scene {
         katana.x = gameStart.x - 180;
         katana.y = gameStart.y;
       }
+
+      if (selectedMenu === 2) {
+        selectedMenu = 1;
+        katana.x = howToPlay.x - 190;
+        katana.y = howToPlay.y;
+      }
     });
 
     this.input.keyboard.on("keydown-DOWN", () => {
+      if (selectedMenu === 1) {
+        selectedMenu = 2;
+        katana.x = ranking.x - 190;
+        katana.y = ranking.y;
+      }
       if (selectedMenu === 0) {
         selectedMenu = 1;
         katana.x = howToPlay.x - 190;
