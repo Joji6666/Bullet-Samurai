@@ -35,6 +35,13 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     super("quickDrawBulletScene");
   }
 
+  init() {
+    bulletSpeed.value = -2400;
+    this.data.set("isBulletTime", false);
+    this.data.set("aimOn", false);
+    this.data.set("isCoolDown", false);
+  }
+
   preload() {
     // Load map
     new PreloadMap(this);
@@ -102,8 +109,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
       const isBulletTime = this.data.get("isBulletTime");
       if (isBulletTime) {
-        console.log("work");
-        const playerAfterImage = this.data.set("playerAfterImages", []);
+        this.data.set("playerAfterImages", []);
 
         const eyeOfRonin = this.physics.add
           .sprite(player.x + 50, player.y, `eye_of_ronin`)

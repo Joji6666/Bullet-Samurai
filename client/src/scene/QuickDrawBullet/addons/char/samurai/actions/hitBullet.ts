@@ -32,11 +32,11 @@ export function hitBullet(
         .getByName("scoreText")
         .setText("Score: " + scene.data.get("score"));
       slashHit.destroy();
-      scene.isBulletDestroy = true;
     });
   } else {
     bullet.destroy();
-    scene.isBulletTime = false;
+
+    scene.data.set("isBulletTime", false);
     scene.data.set("aimOn", false);
     const blood = scene.physics.add
       .sprite(player.x + 10, player.y - 10, `samurai_blood`)

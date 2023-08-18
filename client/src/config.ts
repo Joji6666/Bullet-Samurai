@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import GameOverScene from "./scene/GameOver/GameOverScene";
 import GameStartScene from "./scene/GameStart/GameStartScene";
 import QuickDrawBulletScene from "./scene/QuickDrawBullet/QuickDrawBulletScene";
+import TutorialScene from "./scene/Tutorial/TutorialScene";
 
 const config = {
   type: Phaser.WEBGL,
@@ -13,7 +14,7 @@ const config = {
     default: "arcade",
     // arcade: { debug: true },
   },
-  scene: [GameStartScene, QuickDrawBulletScene, GameOverScene],
+  scene: [GameStartScene, TutorialScene, QuickDrawBulletScene, GameOverScene],
 };
 
 export default new Phaser.Game(config);
