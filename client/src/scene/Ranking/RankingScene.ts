@@ -22,16 +22,16 @@ export default class RankingScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("Hills_01", "asset/background/Hills_01.png");
-    this.load.image("Hills_02", "asset/background/Hills_02.png");
+    this.load.image("back_buildings", "asset/background/back_buildings.png");
+    this.load.image("far_buildings", "asset/background/far_buildings.png");
     this.load.image("ranking", "asset/text/ranking.png");
   }
 
   create() {
     const screenWidth = this.cameras.main.width;
 
-    this.add.image(screenWidth / 2, 350, "Hills_01").setScale(3);
-    this.add.image(screenWidth / 2, 350, "Hills_02").setScale(3);
+    this.add.image(screenWidth / 2, 400, "far_buildings").setScale(5);
+    this.add.image(screenWidth / 2, 400, "back_buildings").setScale(5);
     const ranking = this.add
       .image(screenWidth / 2, 100, "ranking")
       .setScale(1.5);
@@ -72,7 +72,6 @@ export default class RankingScene extends Phaser.Scene {
   }
 
   update() {
-    console.log(rankingData, "data");
     if (rankingData.length > 0) {
       rankingData.forEach((data, index) => {
         if (index < rankingTexts.length) {

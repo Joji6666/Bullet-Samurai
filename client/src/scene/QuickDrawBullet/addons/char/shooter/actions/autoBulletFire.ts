@@ -8,7 +8,7 @@ export function autoBulletFire(
   const score = scene.data.get("score");
   const aimOn = scene.data.get("aimOn");
   function shoot() {
-    if (score > 2000 && aimOn) {
+    if (score > 4000 && aimOn) {
       shooter.anims.play("shooter_shoot", true);
       bulletFire(shooter, scene, bulletSpeed);
       scene.data.set("shooterMoveState", "idle");
@@ -24,7 +24,7 @@ export function autoBulletFire(
       shooter.on("animationcomplete-shooter_aim", () => {
         shooter.anims.play("shooter_shoot", true);
         bulletFire(shooter, scene, bulletSpeed);
-        if (score > 2000) {
+        if (score > 4000) {
           scene.data.set("aimOn", true);
           scene.data.set("shooterMoveState", "idle");
           shooter.removeAllListeners();

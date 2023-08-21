@@ -5,7 +5,7 @@ export function hitBullet(
   player: any,
   bulletSpeed: { value: number }
 ) {
-  const wickTime = Phaser.Math.Between(1, 20);
+  const wickTime = Phaser.Math.Between(1, 2);
   const bullet = scene.data.get("bulletParticle");
   const shooter = scene.children.getByName("shooter");
   const playerMoveState = scene.data.get("playerMoveState");
@@ -13,20 +13,7 @@ export function hitBullet(
   const deathSound = scene.data.get("deathSound");
   const isWickTime = scene.data.get("isWickTime");
   const playerLife = scene.data.get("playerLife");
-
-  if (isWickTime && playerMoveState === "attack") {
-    const samuraiAttackAngle = scene.data.get("samuraiAttackAngle");
-    scene.data.set("successHit", true);
-
-    if (samuraiAttackAngle === "up") {
-      bullet.setVelocityY(-30);
-    }
-    if (samuraiAttackAngle === "down") {
-      bullet.setVelocityY(30);
-    }
-
-    return;
-  }
+  const score = scene.data.get("score");
 
   if (playerMoveState === "attack" && player.isSwordOut) {
     const slashHit = scene.physics.add
@@ -46,7 +33,26 @@ export function hitBullet(
         scene.cameras.main.scrollY + 10
       );
     }, 100);
+    if (isWickTime) {
+      const samuraiAttackAngle = scene.data.get("samuraiAttackAngle");
+      scene.data.set("successHit", true);
+
+      if (samuraiAttackAngle === "up") {
+        bullet.setVelocityY(-30);
+      }
+      if (samuraiAttackAngle === "down") {
+        bullet.setVelocityY(30);
+      }
+
+      slashHit.on("animationcomplete-slash_hit", () => {
+        slashHit.destroy();
+      });
+
+      return;
+    }
+
     bullet.destroy();
+
     slashHit.on("animationcomplete-slash_hit", () => {
       scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
 
@@ -55,21 +61,23 @@ export function hitBullet(
         .setText("Score: " + scene.data.get("score"));
       slashHit.destroy();
 
-      if (wickTime === 1 && !isWickTime) {
+      if ((wickTime === 1 || score > 5000) && !isWickTime) {
         wickTimeOn(scene, shooter);
       }
     });
-  } else {
+  }
+
+  if (playerMoveState !== "attack") {
     bullet.destroy();
 
     player.anims.play("samurai_hit", true);
+    player.isSwordOut = false;
+    scene.data.set("attackAround", 0.1);
+    player.body.setSize(player.width * 0.2, player.height * 0.3);
+    scene.data.set("isBulletDestroy", true);
+    scene.data.set("successHit", false);
+    scene.data.set("playerLife", playerLife - 1);
     player.on("animationcomplete-samurai_hit", () => {
-      player.isSwordOut = false;
-      scene.data.set("attackAround", 0.1);
-      player.body.setSize(player.width * 0.2, player.height * 0.3);
-      scene.data.set("isBulletDestroy", true);
-      scene.data.set("successHit", false);
-      scene.data.set("playerLife", playerLife - 1);
       player.anims.play("samurai_idle", true);
       scene.data.set("playerMoveState", "idle");
     });

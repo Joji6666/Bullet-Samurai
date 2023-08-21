@@ -8,15 +8,16 @@ export default class TutorialScene extends Phaser.Scene {
     this.load.image("z_key", "asset/icon/zkey.png");
     this.load.image("attack", "asset/text/attack.png");
     this.load.image("eye_of_ronin_text", "asset/text/eye_of_ronin.png");
-    this.load.image("Hills_01", "asset/background/Hills_01.png");
-    this.load.image("Hills_02", "asset/background/Hills_02.png");
+
+    this.load.image("back_buildings", "asset/background/back_buildings.png");
+    this.load.image("far_buildings", "asset/background/far_buildings.png");
     this.load.image("how_to_play", "asset/text/howToPlay.png");
   }
 
   create() {
     const screenWidth = this.cameras.main.width;
-    this.add.image(screenWidth / 2, 350, "Hills_01").setScale(3);
-    this.add.image(screenWidth / 2, 350, "Hills_02").setScale(3);
+    this.add.image(screenWidth / 2, 400, "far_buildings").setScale(5);
+    this.add.image(screenWidth / 2, 400, "back_buildings").setScale(5);
     const space = this.add.image(100, 300, "space").setScale(2);
     const zKey = this.add.image(100, 400, "z_key").setScale(2);
     const howToPlay = this.add
