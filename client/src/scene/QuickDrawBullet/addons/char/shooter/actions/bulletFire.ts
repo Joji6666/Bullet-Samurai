@@ -6,8 +6,8 @@ export function bulletFire(
   const isBulletTime = scene.isBulletTime;
   const score = scene.data.get("score");
   const bulletStuck = Phaser.Math.Between(1, 10);
-
-  if (score > 700 && bulletStuck === 5) {
+  const isWickTime = scene.data.get("isWickTime");
+  if (score > 700 && bulletStuck === 5 && !isWickTime) {
     const stuckText = scene.add.text(shooter.x, shooter.y - 100, "stuck", {
       fontSize: "16px",
       color: "black",
@@ -30,8 +30,10 @@ export function bulletFire(
     .create(shooter.x - 34, shooter.y - 17, "bullet")
     .setScale(0.4);
 
+  const gunSound = scene.data.get("gunSound");
+  gunSound.play();
   bulletParticle.scene = scene;
-  bulletSpeed.value = bulletSpeed.value - 100;
+  bulletSpeed.value = bulletSpeed.value - 25;
 
   scene.data.set("bulletParticle", bulletParticle);
 

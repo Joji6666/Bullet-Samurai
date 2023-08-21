@@ -1,5 +1,5 @@
 export default class PreloadSamuraiSprite {
-  constructor(scene: any) {
+  constructor(scene: Phaser.Scene) {
     scene.load.spritesheet("samurai_idle", "asset/char/samurai/idle.png", {
       frameWidth: 200,
       frameHeight: 200,
@@ -11,6 +11,11 @@ export default class PreloadSamuraiSprite {
     });
 
     scene.load.spritesheet("samurai_death", "asset/char/samurai/death.png", {
+      frameWidth: 200,
+      frameHeight: 200,
+    });
+
+    scene.load.spritesheet("samurai_hit", "asset/char/samurai/hit.png", {
       frameWidth: 200,
       frameHeight: 200,
     });

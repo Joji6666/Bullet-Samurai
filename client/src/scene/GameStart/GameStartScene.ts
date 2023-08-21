@@ -17,21 +17,29 @@ export default class GameStartScene extends Phaser.Scene {
       frameHeight: 200,
     });
     this.load.image("title", "asset/text/title.png");
+
     this.load.image("title_slash", "asset/text/title_slash.png");
     this.load.image("ranking", "asset/text/ranking.png");
     this.load.image("game_start", "asset/text/gameStart.png");
     this.load.image("how_to_play", "asset/text/howToPlay.png");
     this.load.image("katana", "asset/icon/katana.png");
-    this.load.image("Hills_01", "asset/background/Hills_01.png");
-    this.load.image("Hills_02", "asset/background/Hills_02.png");
+
+    this.load.image("back_buildings", "asset/background/back_buildings.png");
+    this.load.image("far_buildings", "asset/background/far_buildings.png");
 
     this.load.spritesheet("slash", "asset/effect/slash_hit.png", {
       frameWidth: 43,
       frameHeight: 52,
     });
+    this.load.audio("slash_sound", "asset/sound/slash.wav");
+    this.load.audio("yoo", "asset/sound/yoo.mp3");
+    this.load.audio("main_bgm", "asset/sound/main_bgm.mp3");
   }
 
   create() {
+    const bgm: any = this.sound.add("main_bgm");
+    bgm.setVolume(0.2);
+
     this.anims.create({
       key: "samurai_fall",
 
@@ -59,9 +67,8 @@ export default class GameStartScene extends Phaser.Scene {
 
       repeat: 0,
     });
-
-    this.add.image(screenWidth / 2, 350, "Hills_01").setScale(3);
-    this.add.image(screenWidth / 2, 350, "Hills_02").setScale(3);
+    this.add.image(screenWidth / 2, 400, "far_buildings").setScale(5);
+    this.add.image(screenWidth / 2, 400, "back_buildings").setScale(5);
 
     const title = this.add.image(screenWidth / 2, 650, "title").setScale(1.5);
 
@@ -81,6 +88,9 @@ export default class GameStartScene extends Phaser.Scene {
 
     this.input.keyboard.once("keydown-SPACE", () => {
       if (selectedMenu === 0) {
+        const slashSound = this.sound.add("slash_sound");
+
+        slashSound.play();
         const slash = this.physics.add
           .sprite(title.x, title.y - 550, `slash`)
           .setName("slash")
@@ -110,7 +120,10 @@ export default class GameStartScene extends Phaser.Scene {
             .sprite(100, -100, `samurai_fall`)
             .setName("samurai")
             .setScale(2);
+          const yooSound = this.sound.add("yoo");
 
+          bgm.play();
+          yooSound.play();
           samurai.anims.play("samurai_fall", true);
 
           samurai.setVelocityX(50);
@@ -132,7 +145,10 @@ export default class GameStartScene extends Phaser.Scene {
       () => {
         this.time.delayedCall(1000, () => {
           if (selectedMenu === 0) {
-            this.scene.start("quickDrawBulletScene", { fadeIn: true });
+            this.scene.start("quickDrawBulletScene", {
+              fadeIn: true,
+              mainBgm: bgm,
+            });
           }
 
           if (selectedMenu === 1) {

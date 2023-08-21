@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import PreloadMap from "./addons/map/PreloadMap";
-import CreateMap from "./addons/map/CreateMap";
+
 import AddMap from "./addons/map/AddMap";
 import PreloadSamuraiSprite from "./addons/char/samurai/PreloadSamuraiSprite";
 import SamuraiAnimations from "./addons/char/samurai/SamuraiAnimations";
@@ -11,6 +11,13 @@ import { autoBulletFire } from "./addons/char/shooter/actions/autoBulletFire";
 
 import Physics from "./Physics";
 import BulletTimeProgressBar from "./addons/BulletTimeProgressBar";
+import { slash } from "./addons/char/samurai/actions/slash";
+import PreloadSound from "./PreloadSound";
+import AddSound from "./AddSound";
+import { playRendomBgm } from "./playRendomBgm";
+import PreloadWickSprite from "./addons/char/wick/PreloadWickSprite";
+import WickAnimations from "./addons/char/wick/WickAnimations";
+import { wickBulletFire } from "./addons/char/wick/actions/wickBulletFire";
 
 const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
@@ -35,11 +42,19 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     super("quickDrawBulletScene");
   }
 
-  init() {
+  init(data: any) {
     bulletSpeed.value = -2400;
     this.data.set("isBulletTime", false);
     this.data.set("aimOn", false);
     this.data.set("isCoolDown", false);
+    this.data.set("mainBgm", data.mainBgm);
+    this.data.set("isWickTime", false);
+    this.data.set("playingBgm", data.mainBgm);
+    this.data.set("wickMoveState", "null");
+    this.data.set("successHit", false);
+    this.data.set("isBulletDestroy", true);
+    this.data.set("wickLife", 3);
+    this.data.set("playerLife", 2);
   }
 
   preload() {
@@ -47,6 +62,8 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     new PreloadMap(this);
     new PreloadSamuraiSprite(this);
     new PreloadShooterSprite(this);
+    new PreloadWickSprite(this);
+    new PreloadSound(this);
   }
 
   create() {
@@ -55,17 +72,18 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("attackAround", 0.1);
     this.data.set("aimOn", false);
 
+    const mainBgm = this.data.get("mainBgm");
+    mainBgm.once(Phaser.Sound.Events.COMPLETE, () => {
+      playRendomBgm(this);
+    });
+
+    // Add Sound
+    new AddSound(this);
+
     // Add Map image
     new AddMap(this);
 
-    // platforms setting
-    const platforms = this.physics.add.staticGroup();
-    this.data.set("platforms", platforms);
-
     //player
-
-    // Create Map
-    new CreateMap(platforms, this);
 
     this.data.set("score", 0);
     this.add
@@ -91,6 +109,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     shooter.setFlipX(true);
     this.data.set("shooterMoveState", "idle");
 
+    new WickAnimations(this);
     new SamuraiAnimations(this, player);
     new ShooterAnimations(this, shooter);
 
@@ -100,8 +119,11 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       const bulletTimeProgressBarWidth = this.data.get(
         "bulletTimeProgressBarWidth"
       );
-
+      const attackAnimation = this.data.get("attackAnimation");
+      const playerMoveState = this.data.get("playerMoveState");
       const getIsBulletTime = this.data.get("isBulletTime");
+      const bulletTimeOnSonud = this.data.get("bulletTimeOnSound");
+      const bulletTimeOffSonud = this.data.get("bulletTimeOffSound");
 
       if (bulletTimeProgressBarWidth > 0) {
         this.data.set("isBulletTime", !getIsBulletTime);
@@ -109,8 +131,11 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
       const isBulletTime = this.data.get("isBulletTime");
       if (isBulletTime) {
+        const playingBgm = this.data.get("playingBgm");
+        playingBgm.pause();
         this.data.set("playerAfterImages", []);
-
+        bulletTimeOffSonud.stop();
+        bulletTimeOnSonud.play();
         const eyeOfRonin = this.physics.add
           .sprite(player.x + 50, player.y, `eye_of_ronin`)
           .setName("eyeOfRonin")
@@ -120,6 +145,22 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
         eyeOfRonin.anims.play("eye_of_ronin", true);
         this.data.set("eyeOfRonin", eyeOfRonin);
+      } else {
+        const playingBgm = this.data.get("playingBgm");
+        playingBgm.resume();
+
+        bulletTimeOnSonud.stop();
+        bulletTimeOffSonud.play();
+        if (playerMoveState === "attack") {
+          // 기존 애니메이션 중지
+
+          player.anims.stop();
+
+          // frameRate 변경
+          attackAnimation.frameRate = 60;
+
+          slash(this, player);
+        }
       }
     });
 
@@ -131,7 +172,6 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const bulletInterval = Phaser.Math.Between(minInterval, maxInterval);
     const player = this.data.get("player");
     const background = this.data.get("background");
-    const ground = this.data.get("ground");
     const bulletTimeProgressBar = this.data.get("bulletTimeProgressBar");
     const isBulletTime = this.data.get("isBulletTime");
     const progressBarWidth = 100;
@@ -144,10 +184,20 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const attackAround = this.data.get("attackAround");
     const playerMoveState = this.data.get("playerMoveState");
     const shooterMoveState = this.data.get("shooterMoveState");
-
+    const wickMoveState = this.data.get("wickMoveState");
+    const isWickTime = this.data.get("isWickTime");
+    const successHit = this.data.get("successHit");
+    const isBulletDestroy = this.data.get("isBulletDestroy");
+    const bullet = this.data.get("bulletParticle");
     if (isBulletTime) {
       const bullet = this.data.get("bulletParticle");
-      if (bullet && bullet.body?.velocity?.x) {
+
+      if (isWickTime && successHit && player.isSwordOut && !isBulletDestroy) {
+        bullet.setFlipX(true);
+        bullet.setVelocityX(Math.abs(bulletSpeed.value * 0.1));
+      }
+
+      if (bullet && bullet.body?.velocity?.x && !successHit) {
         bullet.setVelocityX(bulletSpeed.value * 0.1);
       }
       attackAnimation.frameRate = 5;
@@ -155,11 +205,10 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       player.setTint(0x802080);
       shooter.setTint(0x404040);
       background.setTint(0x404040);
-      ground.setTint(0x404040);
 
       this.data.set(
         "bulletTimeProgressBarWidth",
-        bulletTimeProgressBarWidth - 0.25
+        bulletTimeProgressBarWidth - 0.1
       );
 
       bulletTimeProgressBar.clear();
@@ -172,12 +221,24 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       if (bulletTimeProgressBarWidth === 0) {
         this.data.set("isBulletTime", false);
       }
+
+      if (
+        playerMoveState === "attack" &&
+        isWickTime &&
+        successHit &&
+        player.isSwordOut
+      ) {
+        bullet.setFlipX(true);
+        bullet.setVelocityX(Math.abs(bulletSpeed.value * 0.1));
+      }
     }
 
-    this.tweens.add({
-      targets: shooter.anims,
-      timeScale: isBulletTime ? 0.1 : 1,
-    });
+    if (!isWickTime) {
+      this.tweens.add({
+        targets: shooter.anims,
+        timeScale: isBulletTime ? 0.1 : 1,
+      });
+    }
 
     if (!isBulletTime) {
       const eyeOfRonin = this.data.get("eyeOfRonin");
@@ -196,15 +257,21 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       }
 
       const bullet = this.data.get("bulletParticle");
-      if (bullet && bullet.body?.velocity?.x) {
+
+      if (isWickTime && successHit && player.isSwordOut && !isBulletDestroy) {
+        bullet.setFlipX(true);
+        bullet.setVelocityX(Math.abs(bulletSpeed.value));
+      }
+
+      if (bullet && bullet.body?.velocity?.x && !isWickTime) {
         bullet.setVelocityX(bulletSpeed.value);
       }
+
       attackAnimation.frameRate = 60;
 
       player.clearTint();
       shooter.clearTint();
       background.clearTint();
-      ground.clearTint();
     }
 
     if (playerMoveState === "attack") {
@@ -263,10 +330,24 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     if (shooter) {
       const currentTime = this.time.now;
-
       if (currentTime > nextBulletTime && shooterMoveState === "idle") {
         nextBulletTime = currentTime + bulletInterval;
         autoBulletFire(shooter, this, bulletSpeed);
+      }
+    }
+
+    if (isWickTime && wickMoveState === "idle" && isBulletDestroy) {
+      const currentTime = this.time.now;
+      if (currentTime > nextBulletTime) {
+        nextBulletTime = currentTime + bulletInterval;
+        wickBulletFire(this, bulletSpeed);
+      }
+    }
+    if (bullet) {
+      if (bullet.x > 1300 && bullet.body?.velocity?.x) {
+        bullet.destroy();
+        this.data.set("isBulletDestroy", true);
+        this.data.set("successHit", false);
       }
     }
   }

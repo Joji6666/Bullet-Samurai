@@ -30,6 +30,19 @@ export default class SamuraiAnimations {
       repeat: -1,
     });
 
+    scene.samuraiIdleAnimation = scene.anims.create({
+      key: "samurai_hit",
+
+      frames: scene.anims.generateFrameNumbers(`samurai_hit`, {
+        start: 0,
+        end: 3,
+      }),
+
+      frameRate: 10,
+
+      repeat: 0,
+    });
+
     scene.anims.create({
       key: "samurai_death",
 
@@ -136,6 +149,13 @@ export default class SamuraiAnimations {
           }, progressInterval);
         });
       }
+    });
+
+    scene.input.keyboard.on("keydown-UP", () => {
+      scene.data.set("samuraiAttackAngle", "up");
+    });
+    scene.input.keyboard.on("keydown-DOWN", () => {
+      scene.data.set("samuraiAttackAngle", "down");
     });
   }
 }
