@@ -50,8 +50,8 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("wickMoveState", "null");
     this.data.set("successHit", false);
     this.data.set("isBulletDestroy", true);
-    this.data.set("wickLife", 3);
-    this.data.set("playerLife", 2);
+    this.data.set("wickLife", 4);
+    this.data.set("playerLife", 4);
     this.data.set("isBulletTime", false);
     this.data.set("isCoolDown", false);
     this.data.set("attackAround", 0.1);
@@ -84,9 +84,9 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     this.data.set("score", 0);
     this.add
-      .text(50, 100, "score: 0", {
-        fontSize: "32px",
-        color: "white",
+      .text(25, 230, "", {
+        fontSize: "24px",
+        color: "cyan",
         fontFamily: "InfiniteFont",
       })
       .setName("scoreText");
@@ -99,8 +99,18 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("player", player);
     this.data.set("playerMoveState", "idle");
 
-    this.add.image(100, 75, "samurai_life_5").setScale(3);
+    const lifeText = this.add
+      .text(30, 140, "", {
+        fontSize: "24px",
+        color: "red",
+        fontFamily: "InfiniteFont",
+      })
+      .setName("scoreText");
 
+    const samuraiLifeBar = this.add
+      .image(210, 157, "samurai_life_4")
+      .setScale(2.5, 2);
+    this.data.set("samuraiLifeBar", samuraiLifeBar);
     player.body.setSize(player.width * 0.2, player.height * 0.3);
     player.setDepth(2);
     // shooter init
@@ -123,6 +133,13 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     });
 
     new BulletTimeProgressBar(this);
+    setTimeout(() => {
+      const eyeOfRoninText = this.data.get("eyeOfRoninText");
+      eyeOfRoninText.setText("eye of ronin");
+      const scoreText: any = this.children.getByName("scoreText");
+      scoreText.setText("Score: " + this.data.get("score"));
+      lifeText.setText("LIFE");
+    }, 100);
   }
 
   update() {
@@ -150,6 +167,8 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     const bullet = this.data.get("bulletParticle");
     const wick = this.data.get("wick");
     const wickBulletFireComplete = this.data.get("wickBulletFireComplete");
+    const isPlayerHitBullet = this.data.get("isPlayerHitBullet");
+    const playerLife = this.data.get("playerLife");
 
     if (bulletTimeProgressBarWidth <= 0) {
       this.data.set("isBulletTime", false);
@@ -157,11 +176,6 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     if (isBulletTime) {
       const bullet = this.data.get("bulletParticle");
-
-      if (isWickTime && successHit && player.isSwordOut && !isBulletDestroy) {
-        bullet.setFlipX(true);
-        bullet.setVelocityX(Math.abs(bulletSpeed.value * 0.1));
-      }
 
       if (bullet && bullet.body?.velocity?.x && !successHit) {
         bullet.setVelocityX(bulletSpeed.value * 0.1);
@@ -191,28 +205,11 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       if (bulletTimeProgressBarWidth <= 0) {
         this.data.set("isBulletTime", false);
       }
-
-      if (
-        playerMoveState === "attack" &&
-        isWickTime &&
-        successHit &&
-        player.isSwordOut
-      ) {
-        bullet.setFlipX(true);
-        bullet.setVelocityX(Math.abs(bulletSpeed.value * 0.1));
-      }
     }
 
     if (!isWickTime) {
       this.tweens.add({
         targets: shooter.anims,
-        timeScale: isBulletTime ? 0.1 : 1,
-      });
-    }
-
-    if (isWickTime && wick) {
-      this.tweens.add({
-        targets: wick.anims,
         timeScale: isBulletTime ? 0.1 : 1,
       });
     }
@@ -266,10 +263,16 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     }
 
     if (playerMoveState === "attack") {
-      player.body.setSize(player.width * attackAround, player.height * 0.4);
-      // 모든 잔상 위치 및 투명도 업데이트
+      console.log("이게 돈다돌아");
 
-      if (isBulletTime && player.body.offset.x < 57) {
+      if (isPlayerHitBullet) {
+        player.body.setSize(40, 60);
+        return;
+      }
+
+      player.body.setSize(player.width * attackAround, player.height * 0.4);
+
+      if (isBulletTime && player.body.offset.x < 68) {
         player.isSwordOut = true;
       }
 
@@ -348,5 +351,20 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
         this.data.set("successHit", false);
       }
     }
+
+    if (isPlayerHitBullet && playerLife > 0) {
+      player.anims.play("samurai_hit", true);
+
+      player.isSwordOut = false;
+      this.data.set("attackAround", 0.1);
+      player.body.setSize(40, 60);
+      this.data.set("isBulletDestroy", true);
+      this.data.set("successHit", false);
+      this.data.set("isPlayerHitBullet", false);
+    }
+
+    // if (bullet && !bullet.body?.velocity?.x) {
+    //   this.data.set("isBulletDestroy", true);
+    // }
   }
 }

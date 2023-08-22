@@ -17,14 +17,8 @@ export default class GameStartScene extends Phaser.Scene {
       frameHeight: 200,
     });
     this.load.image("title", "asset/text/title.png");
-
     this.load.image("title_slash", "asset/text/title_slash.png");
-    this.load.image("ranking", "asset/text/ranking.png");
-    this.load.image("game_start", "asset/text/gameStart.png");
-    this.load.image("how_to_play", "asset/text/howToPlay.png");
     this.load.image("katana", "asset/icon/katana.png");
-    // this.load.image("katana", "asset/icon/mainKatana.png");
-
     this.load.image("back_buildings", "asset/background/back_buildings.png");
     this.load.image("far_buildings", "asset/background/far_buildings.png");
 
@@ -73,15 +67,32 @@ export default class GameStartScene extends Phaser.Scene {
 
     const title = this.add.image(screenWidth / 2, 650, "title").setScale(1.5);
 
-    const gameStart = this.add
-      .image(screenWidth / 2 + 20, 500, "game_start")
-      .setScale(1);
-    const ranking = this.add
-      .image(screenWidth / 2, 650, "ranking")
-      .setScale(0.5);
-    const howToPlay = this.add
-      .image(screenWidth / 2 + 25, 570, "how_to_play")
-      .setScale(1);
+    const gameStart = this.add.text(screenWidth / 2, 500, "", {
+      fontSize: "32px",
+      color: "cyan",
+      fontFamily: "InfiniteFont",
+    });
+    const ranking = this.add.text(screenWidth / 2, 650, "", {
+      fontSize: "32px",
+      color: "cyan",
+      fontFamily: "InfiniteFont",
+    });
+    const howToPlay = this.add.text(screenWidth / 2, 570, "", {
+      fontSize: "32px",
+      color: "cyan",
+      fontFamily: "InfiniteFont",
+    });
+
+    setTimeout(() => {
+      gameStart.setText("GAME START");
+      howToPlay.setText("HOW TO PLAY");
+      ranking.setText("RANKING");
+    }, 100);
+
+    gameStart.setOrigin(0.5);
+    ranking.setOrigin(0.5);
+    howToPlay.setOrigin(0.5);
+
     const katana = this.add
       .image(gameStart.x - 180, gameStart.y, "katana")
       .setScale(0.75);

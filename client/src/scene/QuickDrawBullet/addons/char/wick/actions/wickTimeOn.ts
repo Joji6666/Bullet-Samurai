@@ -9,7 +9,10 @@ export function wickTimeOn(scene: Phaser.Scene, shooter: any) {
   scene.data.set("playingBgm", wickBgm);
   shooter.anims.play("shooter_run", true);
   shooter.setVelocityX(200);
-
+  const wickLifeBar = scene.add
+    .image(1110, 157, "wick_life_4")
+    .setScale(2.5, 2);
+  scene.data.set("wickLifeBar", wickLifeBar);
   const bullet = scene.data.get("bullets");
 
   setTimeout(() => {
@@ -36,6 +39,7 @@ export function wickTimeOn(scene: Phaser.Scene, shooter: any) {
       wick.setVelocityX(0);
       wick.anims.play("wick_idle", true);
       scene.data.set("wickMoveState", "idle");
+      scene.data.set("isBulletTime", false);
     }, 900);
   }, 1000);
 }

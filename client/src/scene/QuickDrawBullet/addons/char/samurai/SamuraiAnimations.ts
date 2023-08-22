@@ -2,6 +2,19 @@ import { slash } from "./actions/slash";
 
 export default class SamuraiAnimations {
   constructor(scene: any, player: any) {
+    scene.anims.create({
+      key: "eye_of_ronin_aura",
+
+      frames: scene.anims.generateFrameNumbers(`eye_of_ronin_aura`, {
+        start: 0,
+        end: 3,
+      }),
+
+      frameRate: 20,
+
+      repeat: -1,
+    });
+
     const attackAnimation = scene.anims.create({
       key: "samurai_attack",
 

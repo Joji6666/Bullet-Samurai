@@ -24,7 +24,6 @@ export default class RankingScene extends Phaser.Scene {
   preload() {
     this.load.image("back_buildings", "asset/background/back_buildings.png");
     this.load.image("far_buildings", "asset/background/far_buildings.png");
-    this.load.image("ranking", "asset/text/ranking.png");
   }
 
   create() {
@@ -32,31 +31,35 @@ export default class RankingScene extends Phaser.Scene {
 
     this.add.image(screenWidth / 2, 400, "far_buildings").setScale(5);
     this.add.image(screenWidth / 2, 400, "back_buildings").setScale(5);
-    const ranking = this.add
-      .image(screenWidth / 2, 100, "ranking")
-      .setScale(1.5);
+    const rankingSceneTitle = this.add.text(screenWidth / 2, 50, "", {
+      fontSize: "64px",
+      color: "red",
+      fontFamily: "InfiniteFont",
+    });
     for (let i = 0; i < 10; i++) {
-      const yPosition = 200 + i * 50;
+      const yPosition = 100 + i * 50;
       const rankingText = this.add.text(100, yPosition, "", {
-        fontSize: "32px",
-        color: "white",
+        fontSize: "24px",
+        color: "cyan",
         fontFamily: "InfiniteFont",
       });
       rankingTexts.push(rankingText);
     }
 
-    const text = this.add.text(
-      screenWidth / 2,
-      600,
-      "Press Space to Continue",
-      {
-        fontSize: "32px",
-        color: "white",
-        fontFamily: "InfiniteFont",
-      }
-    );
+    const text = this.add.text(screenWidth / 2, 600, "", {
+      fontSize: "32px",
+      color: "cyan",
+      fontFamily: "InfiniteFont",
+    });
 
     text.setOrigin(0.5);
+
+    setTimeout(() => {
+      text.setText("Press Space to Continue");
+      rankingSceneTitle.setText("RANKING");
+    }, 200);
+    rankingSceneTitle.setOrigin(0.5);
+
     this.input.keyboard.on("keydown-SPACE", () => {
       this.cameras.main.fadeOut(1000, 0, 0, 0);
     });
@@ -79,7 +82,7 @@ export default class RankingScene extends Phaser.Scene {
         if (index < rankingTexts.length) {
           const rankingText = rankingTexts[index];
           rankingText.setText(
-            `${index + 1}.${data.data().name}.${data.data().score}`
+            `${index + 1}. ${data.data().name}. ${data.data().score}`
           );
         }
       });

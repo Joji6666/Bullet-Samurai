@@ -3,7 +3,7 @@ export function wickBulletFire(
   bulletSpeed: { value: number }
 ) {
   const wick = scene.data.get("wick");
-  const wickCouchSwitch = Phaser.Math.Between(1, 3);
+  const wickCouchSwitch = Phaser.Math.Between(1, 2);
   wick.anims.play("wick_shoot", true);
   scene.data.set("wickMoveState", "gunFire");
   scene.data.set("isBulletDestroy", false);

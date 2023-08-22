@@ -14,9 +14,9 @@ export function hitBullet(
   const isWickTime = scene.data.get("isWickTime");
   const playerLife = scene.data.get("playerLife");
   const score = scene.data.get("score");
-  scene.data.set("isBulletTime", false);
+  const isWickDead = scene.data.get("isWickDead");
+
   if (playerMoveState === "attack" && player.isSwordOut) {
-    console.log("work");
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
       .setName("slash")
@@ -34,6 +34,7 @@ export function hitBullet(
         scene.cameras.main.scrollY + 5
       );
     }, 100);
+
     if (isWickTime) {
       const samuraiAttackAngle = scene.data.get("samuraiAttackAngle");
       scene.data.set("successHit", true);
@@ -59,28 +60,41 @@ export function hitBullet(
 
     slashHit.on("animationcomplete-slash_hit", () => {
       scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
-      player.isSwordOut = false;
+
       scene.children
         .getByName("scoreText")
         .setText("Score: " + scene.data.get("score"));
       slashHit.destroy();
 
-      if ((wickTime === 1 || score > 5000) && !isWickTime) {
+      if ((wickTime === 1 || score > 5000) && !isWickTime && !isWickDead) {
         wickTimeOn(scene, shooter);
       }
     });
   }
 
-  if (playerMoveState !== "attack") {
+  if (playerMoveState !== "attack" || !player.isSwordOut) {
+    console.log(player.width * 0.2, player.height * 0.3);
     bullet.destroy();
-
+    console.log("work");
+    scene.data.set("isPlayerHitBullet", true);
     player.anims.play("samurai_hit", true);
     player.isSwordOut = false;
     scene.data.set("attackAround", 0.1);
-    player.body.setSize(player.width * 0.2, player.height * 0.3);
+    player.body.setSize(40, 60);
+
     scene.data.set("isBulletDestroy", true);
     scene.data.set("successHit", false);
     scene.data.set("playerLife", playerLife - 1);
+
+    const newPlayerLife = scene.data.get("playerLife");
+
+    const prevLifeBar = scene.data.get("samuraiLifeBar");
+    const newLifeBar = scene.add
+      .image(prevLifeBar.x, prevLifeBar.y, `samurai_life_${newPlayerLife}`)
+      .setScale(2.5, 2);
+    prevLifeBar.destroy();
+    scene.data.set("samuraiLifeBar", newLifeBar);
+
     player.on("animationcomplete-samurai_hit", () => {
       player.anims.play("samurai_idle", true);
       scene.data.set("playerMoveState", "idle");
@@ -96,9 +110,9 @@ export function hitBullet(
         scene.cameras.main.scrollY + 10
       );
     }, 100);
-
+    console.log(newPlayerLife);
     player.setTint(0xff0000);
-    if (playerLife === 0) {
+    if (newPlayerLife === 0) {
       bullet.destroy();
       const playingBgm = scene.data.get("playingBgm");
 

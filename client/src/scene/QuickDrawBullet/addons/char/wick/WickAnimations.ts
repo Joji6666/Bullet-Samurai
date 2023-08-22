@@ -20,7 +20,7 @@ export default class WickAnimations {
         end: 3,
       }),
 
-      frameRate: 5,
+      frameRate: 12,
 
       repeat: 0,
     });
@@ -32,7 +32,7 @@ export default class WickAnimations {
         end: 2,
       }),
 
-      frameRate: 20,
+      frameRate: 30,
 
       repeat: 0,
     });
