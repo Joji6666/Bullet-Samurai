@@ -5,7 +5,7 @@ export function hitBullet(
   player: any,
   bulletSpeed: { value: number }
 ) {
-  const wickTime = Phaser.Math.Between(1, 2);
+  const wickTime = Phaser.Math.Between(1, 30);
   const bullet = scene.data.get("bulletParticle");
   const shooter = scene.children.getByName("shooter");
   const playerMoveState = scene.data.get("playerMoveState");
@@ -68,6 +68,7 @@ export function hitBullet(
 
       if ((wickTime === 1 || score > 5000) && !isWickTime && !isWickDead) {
         wickTimeOn(scene, shooter);
+        scene.data.set("isBulletTime", false);
       }
     });
   }
