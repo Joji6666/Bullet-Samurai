@@ -14,8 +14,9 @@ export function hitBullet(
   const isWickTime = scene.data.get("isWickTime");
   const playerLife = scene.data.get("playerLife");
   const score = scene.data.get("score");
-
+  scene.data.set("isBulletTime", false);
   if (playerMoveState === "attack" && player.isSwordOut) {
+    console.log("work");
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
       .setName("slash")
@@ -23,20 +24,22 @@ export function hitBullet(
     slashSound.play();
     slashHit.anims.play("slash_hit", true);
     scene.cameras.main.setScroll(
-      scene.cameras.main.scrollX + 10,
-      scene.cameras.main.scrollY + -10
+      scene.cameras.main.scrollX + 5,
+      scene.cameras.main.scrollY + -5
     );
 
     setTimeout(() => {
       scene.cameras.main.setScroll(
-        scene.cameras.main.scrollX - 10,
-        scene.cameras.main.scrollY + 10
+        scene.cameras.main.scrollX - 5,
+        scene.cameras.main.scrollY + 5
       );
     }, 100);
     if (isWickTime) {
       const samuraiAttackAngle = scene.data.get("samuraiAttackAngle");
       scene.data.set("successHit", true);
+      scene.data.set("attackAround", 0.1);
 
+      player.body.setSize(player.width * 0.2, player.height * 0.3);
       if (samuraiAttackAngle === "up") {
         bullet.setVelocityY(-30);
       }
@@ -46,6 +49,7 @@ export function hitBullet(
 
       slashHit.on("animationcomplete-slash_hit", () => {
         slashHit.destroy();
+        player.isSwordOut = false;
       });
 
       return;
@@ -55,7 +59,7 @@ export function hitBullet(
 
     slashHit.on("animationcomplete-slash_hit", () => {
       scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
-
+      player.isSwordOut = false;
       scene.children
         .getByName("scoreText")
         .setText("Score: " + scene.data.get("score"));

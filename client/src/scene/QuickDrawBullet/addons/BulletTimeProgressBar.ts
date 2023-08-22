@@ -14,9 +14,14 @@ export default class BulletTimeProgressBar {
       progressBarWidth,
       progressBarHeight
     );
+    const eyeOfRoninIcon = scene.add
+      .image(15, 195, "eye_of_ronin_icon")
+      .setScale(0.5);
     bulletTimeProgressBarContainer.add(bulletTimeProgressBar);
     const text = scene.add.text(30, 185, "eye of ronin", {
-      fontSize: "14px",
+      fontSize: "16px",
+      fontFamily: "InfiniteFont", // CSS에서 정의한 font-family 이름 사용
+      color: "skyblue",
     });
     scene.add.existing(bulletTimeProgressBarContainer);
     scene.data.set("bulletTimeProgressBar", bulletTimeProgressBar);

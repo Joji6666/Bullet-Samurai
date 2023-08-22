@@ -6,7 +6,7 @@ export function wickTimeOn(scene: Phaser.Scene, shooter: any) {
   const wickBgm = scene.sound.add("wick_bgm");
   wickBgm.play();
   scene.data.set("isWickTime", true);
-
+  scene.data.set("playingBgm", wickBgm);
   shooter.anims.play("shooter_run", true);
   shooter.setVelocityX(200);
 

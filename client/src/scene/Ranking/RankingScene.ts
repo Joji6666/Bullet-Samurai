@@ -39,7 +39,8 @@ export default class RankingScene extends Phaser.Scene {
       const yPosition = 200 + i * 50;
       const rankingText = this.add.text(100, yPosition, "", {
         fontSize: "32px",
-        color: "black",
+        color: "white",
+        fontFamily: "InfiniteFont",
       });
       rankingTexts.push(rankingText);
     }
@@ -50,7 +51,8 @@ export default class RankingScene extends Phaser.Scene {
       "Press Space to Continue",
       {
         fontSize: "32px",
-        align: "center", // 텍스트를 가운데 정렬
+        color: "white",
+        fontFamily: "InfiniteFont",
       }
     );
 

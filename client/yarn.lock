@@ -4062,6 +4062,11 @@ phaser@^3.55.2:
     eventemitter3 "^4.0.7"
     path "^0.12.7"
 
+phaser3-webfont-loader@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/phaser3-webfont-loader/-/phaser3-webfont-loader-1.0.0.tgz"
+  integrity sha512-lh9f+diF2StN0Tq3wPADkjdxlQ35w2PEf2tZyyeWeP6OOHx953hCiuLUlsOrQ+Hcl1UsoquzLcc1zj0rohNk1g==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.0.0.tgz"
@@ -4878,6 +4883,11 @@ wcwidth@^1.0.1:
   integrity sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==
   dependencies:
     defaults "^1.0.3"
+
+webfontloader@^1.6.28:
+  version "1.6.28"
+  resolved "https://registry.npmjs.org/webfontloader/-/webfontloader-1.6.28.tgz"
+  integrity sha512-Egb0oFEga6f+nSgasH3E0M405Pzn6y3/9tOVanv/DLfa1YBIgcv90L18YyWnvXkRbIM17v5Kv6IT2N6g1x5tvQ==
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

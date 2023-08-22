@@ -27,16 +27,19 @@ export function wickBulletFire(
   );
   wick.body.setSize(wick.width * 0.2, wick.height * 0.3);
   wick.on("animationcomplete-wick_shoot", () => {
+    console.log("wick fire complete");
     if (wickCouchSwitch === 1) {
       wick.anims.play("wick_couch", true);
       wick.body.setSize(wick.width * 0.2, wick.height * 0.1);
       setTimeout(() => {
         scene.data.set("wickMoveState", "idle");
         wick.removeAllListeners();
+        scene.data.set("wickBulletFireComplete", true);
       }, 1000);
     } else {
       wick.anims.play("wick_idle", true);
       scene.data.set("wickMoveState", "idle");
+      scene.data.set("wickBulletFireComplete", true);
       wick.removeAllListeners();
     }
   });

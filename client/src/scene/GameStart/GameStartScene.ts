@@ -23,6 +23,7 @@ export default class GameStartScene extends Phaser.Scene {
     this.load.image("game_start", "asset/text/gameStart.png");
     this.load.image("how_to_play", "asset/text/howToPlay.png");
     this.load.image("katana", "asset/icon/katana.png");
+    // this.load.image("katana", "asset/icon/mainKatana.png");
 
     this.load.image("back_buildings", "asset/background/back_buildings.png");
     this.load.image("far_buildings", "asset/background/far_buildings.png");

@@ -1,5 +1,12 @@
 export default class PreloadSamuraiSprite {
   constructor(scene: Phaser.Scene) {
+    scene.load.image("eye_of_ronin_icon", "asset/icon/eye_of_ronin_icon_2.png");
+    scene.load.image("samurai_life_5", "asset/ui/player_life_5.png");
+    scene.load.image("samurai_life_4", "asset/ui/player_life_4.png");
+    scene.load.image("samurai_life_3", "asset/ui/player_life_3.png");
+    scene.load.image("samurai_life_2", "asset/ui/player_life_2.png");
+    scene.load.image("samurai_life_1", "asset/ui/player_life_1.png");
+
     scene.load.spritesheet("samurai_idle", "asset/char/samurai/idle.png", {
       frameWidth: 200,
       frameHeight: 200,
