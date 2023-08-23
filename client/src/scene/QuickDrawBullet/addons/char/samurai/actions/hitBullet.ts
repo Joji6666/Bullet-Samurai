@@ -16,9 +16,10 @@ export function hitBullet(
   const score = scene.data.get("score");
   const isWickDead = scene.data.get("isWickDead");
   const isCrouchBullet = scene.data.get("isCrouchBullet");
+  const combo = scene.data.get("combo");
+  const comboText = scene.data.get("comboText");
 
   if (playerMoveState === "attack" && player.isSwordOut && !isCrouchBullet) {
-    console.log(isCrouchBullet);
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
       .setName("slash")
@@ -61,12 +62,22 @@ export function hitBullet(
     bullet.destroy();
 
     slashHit.on("animationcomplete-slash_hit", () => {
+      scene.data.set("combo", combo + 1);
+
+      const newCombo = scene.data.get("combo");
+
+      if (newCombo >= 2) {
+        comboText.setText(`${newCombo} COMBO`);
+      }
       const crow = scene.data.get("crow");
       crow.anims.play("crow_idle_2", true);
       crow.on("animationcomplete-crow_idle_2", () => {
         crow.anims.play("crow_idle", true);
       });
-      scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
+      scene.data.set(
+        "score",
+        scene.data.get("score") + Math.floor(bullet.x + newCombo * 10)
+      );
 
       scene.children
         .getByName("scoreText")
@@ -81,6 +92,8 @@ export function hitBullet(
   }
 
   if (playerMoveState !== "attack" || !player.isSwordOut) {
+    scene.data.set("combo", 0);
+    comboText.setText("");
     bullet.destroy();
     player.setVelocityY(0);
     player.x = 100;
@@ -124,7 +137,7 @@ export function hitBullet(
         scene.cameras.main.scrollY + 10
       );
     }, 100);
-    console.log(newPlayerLife);
+    scene.data.set("isCrouchBullet", false);
     player.setTint(0xff0000);
     if (newPlayerLife === 0) {
       bullet.destroy();

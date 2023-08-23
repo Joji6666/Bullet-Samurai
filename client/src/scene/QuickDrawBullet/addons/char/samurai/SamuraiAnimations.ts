@@ -73,7 +73,7 @@ export default class SamuraiAnimations {
       repeat: 0,
     });
 
-    scene.anims.create({
+    const samuraiJumpAniamitaon = scene.anims.create({
       key: "samurai_jump",
 
       frames: scene.anims.generateFrameNumbers(`samurai_jump`, {
@@ -86,7 +86,9 @@ export default class SamuraiAnimations {
       repeat: 0,
     });
 
-    scene.anims.create({
+    scene.data.set("samuraiJumpAniamitaon", samuraiJumpAniamitaon);
+
+    const samuraiFallAniamitaon = scene.anims.create({
       key: "samurai_fall",
 
       frames: scene.anims.generateFrameNumbers(`samurai_fall`, {
@@ -98,6 +100,8 @@ export default class SamuraiAnimations {
 
       repeat: -1,
     });
+
+    scene.data.set("samuraiFallAniamitaon", samuraiFallAniamitaon);
 
     scene.anims.create({
       key: "slash_hit",
@@ -141,7 +145,11 @@ export default class SamuraiAnimations {
     player.anims.play("samurai_idle", true);
 
     scene.input.keyboard.on("keydown-SPACE", () => {
-      slash(scene, player);
+      const playerMoveState = scene.data.get("playerMoveState");
+
+      if (playerMoveState === "idle") {
+        slash(scene, player);
+      }
     });
 
     scene.input.keyboard.on("keydown-UP", () => {

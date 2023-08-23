@@ -60,6 +60,8 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("aimOn", false);
     this.data.set("wickBulletFireComplete", true);
     this.data.set("isPlayerHitBullet", false);
+    this.data.set("combo", 0);
+    this.data.set("samuraiAttackAngle", "up");
   }
 
   preload() {
@@ -145,6 +147,14 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       scoreText.setText("Score: " + this.data.get("score"));
       lifeText.setText("LIFE");
     }, 100);
+
+    const comboText = this.add.text(950, 185, ``, {
+      fontSize: "32px",
+      fontFamily: "InfiniteFont", // CSS에서 정의한 font-family 이름 사용
+      color: "cyan",
+    });
+
+    this.data.set("comboText", comboText);
   }
 
   update() {
@@ -352,6 +362,16 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
         bullet.destroy();
         this.data.set("isBulletDestroy", true);
         this.data.set("successHit", false);
+      }
+    }
+
+    if (bullet) {
+      if (bullet.x < 0 && bullet.body?.velocity?.x) {
+        console.log("work");
+        bullet.destroy();
+        this.data.set("isBulletDestroy", true);
+        this.data.set("successHit", false);
+        this.data.set("isCrouchBullet", false);
       }
     }
 
