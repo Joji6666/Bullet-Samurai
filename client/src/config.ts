@@ -14,7 +14,7 @@ const config = {
   height: 700,
   physics: {
     default: "arcade",
-    arcade: { debug: true },
+    // arcade: { debug: true },
   },
   scene: [
     GameStartScene,

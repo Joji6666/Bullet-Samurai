@@ -5,6 +5,7 @@ export default class PreloadWickSprite {
     scene.load.image("wick_life_2", "asset/ui/wick_life_3.png");
     scene.load.image("wick_life_1", "asset/ui/wick_life_2.png");
     scene.load.image("wick_life_0", "asset/ui/wick_life_1.png");
+    scene.load.image("wick_vest", "asset/char/wick/wick_vest.png");
 
     scene.load.spritesheet("wick_idle", "asset/char/wick/wick_idle.png", {
       frameWidth: 64,
@@ -27,6 +28,11 @@ export default class PreloadWickSprite {
       frameHeight: 64,
     });
     scene.load.spritesheet("wick_run", "asset/char/wick/wick_run.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    scene.load.spritesheet("wick_vest_hit", "asset/effect/hit_vest.png", {
       frameWidth: 64,
       frameHeight: 64,
     });

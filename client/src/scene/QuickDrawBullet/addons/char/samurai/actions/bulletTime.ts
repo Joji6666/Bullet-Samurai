@@ -12,7 +12,6 @@ export function bulletTime(scene: Phaser.Scene, player: any) {
   const bulletTimeOffSonud = scene.data.get("bulletTimeOffSound");
   const isWickTime = scene.data.get("isWickTime");
   const isCrouchBullet = scene.data.get("isCrouchBullet");
-  console.log(isCrouchBullet);
   if (bulletTimeProgressBarWidth > 0 && !isWickTime && !isCrouchBullet) {
     scene.data.set("isBulletTime", !getIsBulletTime);
   }

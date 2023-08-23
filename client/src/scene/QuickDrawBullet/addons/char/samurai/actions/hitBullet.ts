@@ -27,14 +27,14 @@ export function hitBullet(
     slashSound.play();
     slashHit.anims.play("slash_hit", true);
     scene.cameras.main.setScroll(
-      scene.cameras.main.scrollX + 5,
-      scene.cameras.main.scrollY + -5
+      scene.cameras.main.scrollX + 10,
+      scene.cameras.main.scrollY + -10
     );
 
     setTimeout(() => {
       scene.cameras.main.setScroll(
-        scene.cameras.main.scrollX - 5,
-        scene.cameras.main.scrollY + 5
+        scene.cameras.main.scrollX - 10,
+        scene.cameras.main.scrollY + 10
       );
     }, 100);
 
@@ -46,9 +46,11 @@ export function hitBullet(
       player.body.setSize(player.width * 0.2, player.height * 0.3);
       if (samuraiAttackAngle === "up") {
         bullet.setVelocityY(-30);
+        scene.data.set("bulletAngle", "up");
       }
       if (samuraiAttackAngle === "down") {
         bullet.setVelocityY(30);
+        scene.data.set("bulletAngle", "down");
       }
 
       slashHit.on("animationcomplete-slash_hit", () => {

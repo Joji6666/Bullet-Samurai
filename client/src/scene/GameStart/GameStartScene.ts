@@ -22,9 +22,9 @@ export default class GameStartScene extends Phaser.Scene {
     this.load.image("back_buildings", "asset/background/back_buildings.png");
     this.load.image("far_buildings", "asset/background/far_buildings.png");
 
-    this.load.spritesheet("slash", "asset/effect/slash_hit.png", {
-      frameWidth: 43,
-      frameHeight: 52,
+    this.load.spritesheet("slash", "asset/effect/title_slash.png", {
+      frameWidth: 64,
+      frameHeight: 64,
     });
     this.load.audio("slash_sound", "asset/sound/slash.wav");
     this.load.audio("yoo", "asset/sound/yoo.mp3");
@@ -55,7 +55,7 @@ export default class GameStartScene extends Phaser.Scene {
 
       frames: this.anims.generateFrameNumbers(`slash`, {
         start: 0,
-        end: 3,
+        end: 9,
       }),
 
       frameRate: 60,
@@ -83,15 +83,23 @@ export default class GameStartScene extends Phaser.Scene {
       fontFamily: "InfiniteFont",
     });
 
+    const pressSpace = this.add.text(screenWidth / 2, 450, "", {
+      fontSize: "12px",
+      color: "cyan",
+      fontFamily: "InfiniteFont",
+    });
+
     setTimeout(() => {
       gameStart.setText("GAME START");
       howToPlay.setText("HOW TO PLAY");
       ranking.setText("RANKING");
+      pressSpace.setText(" Press the space bar to select.");
     }, 100);
 
     gameStart.setOrigin(0.5);
     ranking.setOrigin(0.5);
     howToPlay.setOrigin(0.5);
+    pressSpace.setOrigin(0.5);
 
     const katana = this.add
       .image(gameStart.x - 180, gameStart.y, "katana")
@@ -104,10 +112,9 @@ export default class GameStartScene extends Phaser.Scene {
 
         slashSound.play();
         const slash = this.physics.add
-          .sprite(title.x, title.y - 550, `slash`)
+          .sprite(title.x, title.y - 560, `slash`)
           .setName("slash")
-          .setScale(12);
-        slash.rotation = Phaser.Math.DegToRad(45);
+          .setScale(9, 1);
 
         slash.anims.play("slash", true);
         this.cameras.main.setScroll(

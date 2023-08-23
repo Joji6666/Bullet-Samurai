@@ -15,11 +15,6 @@ export default class BulletTimeProgressBar {
       progressBarHeight
     );
 
-    const eyeOfRoninAura = scene.physics.add
-      .sprite(210, 195, "eye_of_ronin_aura")
-      .setScale(4.5, 0.6);
-
-    eyeOfRoninAura.anims.play("eye_of_ronin_aura", true);
     const eyeOfRoninIcon = scene.add
       .image(15, 195, "eye_of_ronin_icon")
       .setScale(0.5);

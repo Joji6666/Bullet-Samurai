@@ -123,10 +123,14 @@ export default class EnterRankScene extends Phaser.Scene {
     const text = this.add.text(screenWidth / 2, 600, `Your Score:${score}`, {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
+      fontFamily: "InfiniteFont",
+      color: "cyan",
     });
     const text2 = this.add.text(screenWidth / 2, 150, `Enter Your Name`, {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
+      fontFamily: "InfiniteFont",
+      color: "red",
     });
     text.setOrigin(0.5);
     text2.setOrigin(0.5);
@@ -162,11 +166,15 @@ export default class EnterRankScene extends Phaser.Scene {
     });
 
     const textValue = this.add.text(screenWidth / 2, 225, "", {
-      fontSize: "64px",
+      fontSize: "38px",
+      fontFamily: "InfiniteFont",
+      color: "cyan",
     });
 
     const pressEnterText = this.add.text(screenWidth / 2, 260, "", {
-      fontSize: "14px",
+      fontSize: "12px",
+      fontFamily: "InfiniteFont",
+      color: "cyan",
     });
     textValue.setOrigin(0.5);
 

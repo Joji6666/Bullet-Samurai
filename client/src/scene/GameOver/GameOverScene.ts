@@ -38,11 +38,15 @@ export default class GameOverScene extends Phaser.Scene {
     const text = this.add.text(screenWidth / 2, 100, "GAME OVER", {
       fontSize: "64px",
       align: "center", // 텍스트를 가운데 정렬
+      fontFamily: "InfiniteFont",
+      color: "red",
     });
 
     const text2 = this.add.text(screenWidth / 2, 200, `Your Score:${score}`, {
-      fontSize: "64px",
+      fontSize: "32px",
       align: "center", // 텍스트를 가운데 정렬
+      fontFamily: "InfiniteFont",
+      color: "cyan",
     });
     const text3 = this.add.text(
       screenWidth / 2,
@@ -51,6 +55,8 @@ export default class GameOverScene extends Phaser.Scene {
       {
         fontSize: "16px",
         align: "center", // 텍스트를 가운데 정렬
+        fontFamily: "InfiniteFont",
+        color: "cyan",
       }
     );
 
@@ -61,6 +67,8 @@ export default class GameOverScene extends Phaser.Scene {
       {
         fontSize: "16px",
         align: "center", // 텍스트를 가운데 정렬
+        fontFamily: "InfiniteFont",
+        color: "cyan",
       }
     );
 

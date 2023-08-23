@@ -7,7 +7,7 @@ export function autoBulletFire(
 ) {
   const score = scene.data.get("score");
   const aimOn = scene.data.get("aimOn");
-  const shooterCrouchSwich = Phaser.Math.Between(1, 2);
+  const shooterCrouchSwich = Phaser.Math.Between(1, 3);
   function shoot() {
     if (score > 500) {
       scene.data.set("isShooterCrouch", true);

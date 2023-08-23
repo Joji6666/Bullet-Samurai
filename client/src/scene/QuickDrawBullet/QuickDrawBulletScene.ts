@@ -17,6 +17,8 @@ import { wickBulletFire } from "./addons/char/wick/actions/wickBulletFire";
 import { bulletTime } from "./addons/char/samurai/actions/bulletTime";
 import PreloadCrowSprite from "./addons/char/crow/PreloadCrowSprite";
 import CrowAnimations from "./addons/char/crow/CrowAnimations";
+import PreloadCatSprite from "./addons/char/cat/PreloadCatSprite";
+import CatAnimations from "./addons/char/cat/CatAnimations";
 
 const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
@@ -71,6 +73,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     new PreloadShooterSprite(this);
     new PreloadWickSprite(this);
     new PreloadCrowSprite(this);
+    new PreloadCatSprite(this);
     new PreloadSound(this);
   }
 
@@ -87,6 +90,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     new AddMap(this);
 
     new CrowAnimations(this);
+    new CatAnimations(this);
     //player
 
     this.data.set("score", 0);

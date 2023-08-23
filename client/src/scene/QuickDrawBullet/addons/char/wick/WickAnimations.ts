@@ -72,5 +72,17 @@ export default class WickAnimations {
 
       repeat: -1,
     });
+    scene.anims.create({
+      key: "wick_vest_hit",
+
+      frames: scene.anims.generateFrameNumbers(`wick_vest_hit`, {
+        start: 0,
+        end: 9,
+      }),
+
+      frameRate: 30,
+
+      repeat: 0,
+    });
   }
 }

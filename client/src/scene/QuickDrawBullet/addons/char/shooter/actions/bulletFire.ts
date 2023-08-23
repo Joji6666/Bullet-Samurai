@@ -26,6 +26,18 @@ export function bulletFire(
     return;
   }
 
+  scene.cameras.main.setScroll(
+    scene.cameras.main.scrollX + 5,
+    scene.cameras.main.scrollY + -5
+  );
+
+  setTimeout(() => {
+    scene.cameras.main.setScroll(
+      scene.cameras.main.scrollX - 5,
+      scene.cameras.main.scrollY + 5
+    );
+  }, 100);
+
   const bulletParticle = scene.data
     .get("bullets")
     .create(
