@@ -15,6 +15,8 @@ import PreloadWickSprite from "./addons/char/wick/PreloadWickSprite";
 import WickAnimations from "./addons/char/wick/WickAnimations";
 import { wickBulletFire } from "./addons/char/wick/actions/wickBulletFire";
 import { bulletTime } from "./addons/char/samurai/actions/bulletTime";
+import PreloadCrowSprite from "./addons/char/crow/PreloadCrowSprite";
+import CrowAnimations from "./addons/char/crow/CrowAnimations";
 
 const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
@@ -57,6 +59,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     this.data.set("attackAround", 0.1);
     this.data.set("aimOn", false);
     this.data.set("wickBulletFireComplete", true);
+    this.data.set("isPlayerHitBullet", false);
   }
 
   preload() {
@@ -65,6 +68,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     new PreloadSamuraiSprite(this);
     new PreloadShooterSprite(this);
     new PreloadWickSprite(this);
+    new PreloadCrowSprite(this);
     new PreloadSound(this);
   }
 
@@ -80,6 +84,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     // Add Map image
     new AddMap(this);
 
+    new CrowAnimations(this);
     //player
 
     this.data.set("score", 0);
@@ -263,8 +268,6 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
     }
 
     if (playerMoveState === "attack") {
-      console.log("이게 돈다돌아");
-
       if (isPlayerHitBullet) {
         player.body.setSize(40, 60);
         return;
@@ -362,9 +365,5 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
       this.data.set("successHit", false);
       this.data.set("isPlayerHitBullet", false);
     }
-
-    // if (bullet && !bullet.body?.velocity?.x) {
-    //   this.data.set("isBulletDestroy", true);
-    // }
   }
 }

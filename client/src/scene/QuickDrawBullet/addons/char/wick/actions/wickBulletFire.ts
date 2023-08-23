@@ -29,7 +29,7 @@ export function wickBulletFire(
   wick.on("animationcomplete-wick_shoot", () => {
     console.log("wick fire complete");
     if (wickCouchSwitch === 1) {
-      wick.anims.play("wick_couch", true);
+      wick.anims.play("wick_crouch", true);
       wick.body.setSize(wick.width * 0.2, wick.height * 0.1);
       setTimeout(() => {
         scene.data.set("wickMoveState", "idle");

@@ -35,6 +35,15 @@ export default class PreloadSamuraiSprite {
       frameWidth: 200,
       frameHeight: 200,
     });
+    scene.load.spritesheet("samurai_jump", "asset/char/samurai/jump.png", {
+      frameWidth: 200,
+      frameHeight: 200,
+    });
+
+    scene.load.spritesheet("samurai_fall", "asset/char/samurai/fall.png", {
+      frameWidth: 200,
+      frameHeight: 200,
+    });
 
     scene.load.spritesheet("slash_hit", "asset/effect/slash_hit_3.png", {
       frameWidth: 56,

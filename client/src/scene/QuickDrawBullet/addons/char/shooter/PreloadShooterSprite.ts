@@ -63,5 +63,38 @@ export default class PreloadShooterSprite {
         frameHeight: 66,
       }
     );
+
+    scene.load.spritesheet(
+      "shooter_crouch",
+      "asset/char/shooter/shooter_crouch.png",
+      {
+        frameWidth: 66,
+        frameHeight: 66,
+      }
+    );
+    scene.load.spritesheet(
+      "shooter_crouch_aim",
+      "asset/char/shooter/shooter_crouch_aim.png",
+      {
+        frameWidth: 66,
+        frameHeight: 66,
+      }
+    );
+    scene.load.spritesheet(
+      "shooter_crouch_reload",
+      "asset/char/shooter/shooter_crouch_reload.png",
+      {
+        frameWidth: 66,
+        frameHeight: 66,
+      }
+    );
+    scene.load.spritesheet(
+      "shooter_crouch_shoot",
+      "asset/char/shooter/shooter_crouch_shoot.png",
+      {
+        frameWidth: 66,
+        frameHeight: 66,
+      }
+    );
   }
 }

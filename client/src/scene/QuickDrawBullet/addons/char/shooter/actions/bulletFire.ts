@@ -7,6 +7,7 @@ export function bulletFire(
   const score = scene.data.get("score");
   const bulletStuck = Phaser.Math.Between(1, 10);
   const isWickTime = scene.data.get("isWickTime");
+  const shooterMoveState = scene.data.get("shooterMoveState");
   if (score > 700 && bulletStuck === 5 && !isWickTime) {
     const stuckText = scene.add.text(shooter.x, shooter.y - 100, "stuck", {
       fontSize: "16px",
@@ -27,7 +28,11 @@ export function bulletFire(
 
   const bulletParticle = scene.data
     .get("bullets")
-    .create(shooter.x - 34, shooter.y - 17, "bullet")
+    .create(
+      shooter.x - 34,
+      shooterMoveState === "crouchGunFire" ? shooter.y : shooter.y - 17,
+      "bullet"
+    )
     .setScale(0.4);
 
   const gunSound = scene.data.get("gunSound");

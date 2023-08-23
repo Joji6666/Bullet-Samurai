@@ -90,6 +90,54 @@ export default class ShooterAnimations {
 
       repeat: -1,
     });
+    scene.anims.create({
+      key: "shooter_crouch",
+
+      frames: scene.anims.generateFrameNumbers(`shooter_crouch`, {
+        start: 0,
+        end: 5,
+      }),
+
+      frameRate: 20,
+
+      repeat: 0,
+    });
+    scene.anims.create({
+      key: "shooter_crouch_aim",
+
+      frames: scene.anims.generateFrameNumbers(`shooter_crouch_aim`, {
+        start: 0,
+        end: 5,
+      }),
+
+      frameRate: 20,
+
+      repeat: 0,
+    });
+    scene.anims.create({
+      key: "shooter_crouch_reload",
+
+      frames: scene.anims.generateFrameNumbers(`shooter_crouch_reload`, {
+        start: 0,
+        end: 7,
+      }),
+
+      frameRate: 20,
+
+      repeat: 0,
+    });
+    scene.anims.create({
+      key: "shooter_crouch_shoot",
+
+      frames: scene.anims.generateFrameNumbers(`shooter_crouch_shoot`, {
+        start: 0,
+        end: 4,
+      }),
+
+      frameRate: 20,
+
+      repeat: 0,
+    });
 
     shooter.anims.play("shooter_idle", true);
   }

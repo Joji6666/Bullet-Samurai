@@ -25,9 +25,9 @@ export default class WickAnimations {
       repeat: 0,
     });
     scene.anims.create({
-      key: "wick_couch",
+      key: "wick_crouch",
 
-      frames: scene.anims.generateFrameNumbers(`wick_couch`, {
+      frames: scene.anims.generateFrameNumbers(`wick_crouch`, {
         start: 0,
         end: 2,
       }),

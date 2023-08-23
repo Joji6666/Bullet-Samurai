@@ -15,8 +15,10 @@ export function hitBullet(
   const playerLife = scene.data.get("playerLife");
   const score = scene.data.get("score");
   const isWickDead = scene.data.get("isWickDead");
+  const isCrouchBullet = scene.data.get("isCrouchBullet");
 
-  if (playerMoveState === "attack" && player.isSwordOut) {
+  if (playerMoveState === "attack" && player.isSwordOut && !isCrouchBullet) {
+    console.log(isCrouchBullet);
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
       .setName("slash")
@@ -59,6 +61,11 @@ export function hitBullet(
     bullet.destroy();
 
     slashHit.on("animationcomplete-slash_hit", () => {
+      const crow = scene.data.get("crow");
+      crow.anims.play("crow_idle_2", true);
+      crow.on("animationcomplete-crow_idle_2", () => {
+        crow.anims.play("crow_idle", true);
+      });
       scene.data.set("score", scene.data.get("score") + Math.floor(bullet.x));
 
       scene.children
@@ -74,10 +81,16 @@ export function hitBullet(
   }
 
   if (playerMoveState !== "attack" || !player.isSwordOut) {
-    console.log(player.width * 0.2, player.height * 0.3);
     bullet.destroy();
-    console.log("work");
+    player.setVelocityY(0);
+    player.x = 100;
+    player.y = 640;
     scene.data.set("isPlayerHitBullet", true);
+    const crow2 = scene.data.get("crow2");
+    crow2.anims.play("crow_idle_2", true);
+    crow2.on("animationcomplete-crow_idle_2", () => {
+      crow2.anims.play("crow_idle", true);
+    });
     player.anims.play("samurai_hit", true);
     player.isSwordOut = false;
     scene.data.set("attackAround", 0.1);

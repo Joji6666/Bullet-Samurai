@@ -14,7 +14,7 @@ export default class PreloadWickSprite {
       frameWidth: 64,
       frameHeight: 64,
     });
-    scene.load.spritesheet("wick_couch", "asset/char/wick/wick_couch.png", {
+    scene.load.spritesheet("wick_crouch", "asset/char/wick/wick_crouch.png", {
       frameWidth: 64,
       frameHeight: 64,
     });

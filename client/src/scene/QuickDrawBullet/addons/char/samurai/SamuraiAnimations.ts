@@ -1,3 +1,4 @@
+import { jump } from "./actions/jump";
 import { slash } from "./actions/slash";
 
 export default class SamuraiAnimations {
@@ -73,6 +74,32 @@ export default class SamuraiAnimations {
     });
 
     scene.anims.create({
+      key: "samurai_jump",
+
+      frames: scene.anims.generateFrameNumbers(`samurai_jump`, {
+        start: 0,
+        end: 1,
+      }),
+
+      frameRate: 10,
+
+      repeat: 0,
+    });
+
+    scene.anims.create({
+      key: "samurai_fall",
+
+      frames: scene.anims.generateFrameNumbers(`samurai_fall`, {
+        start: 0,
+        end: 1,
+      }),
+
+      frameRate: 30,
+
+      repeat: -1,
+    });
+
+    scene.anims.create({
       key: "slash_hit",
 
       frames: scene.anims.generateFrameNumbers(`slash_hit`, {
@@ -122,6 +149,12 @@ export default class SamuraiAnimations {
     });
     scene.input.keyboard.on("keydown-DOWN", () => {
       scene.data.set("samuraiAttackAngle", "down");
+    });
+    scene.input.keyboard.on("keydown-X", () => {
+      const isCoolDown = scene.data.get("isCoolDown");
+      if (!isCoolDown) {
+        jump(scene, player);
+      }
     });
   }
 }
