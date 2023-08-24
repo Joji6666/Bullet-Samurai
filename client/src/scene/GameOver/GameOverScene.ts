@@ -17,6 +17,8 @@ export default class GameOverScene extends Phaser.Scene {
       frameWidth: 200,
       frameHeight: 200,
     });
+    this.load.audio("main_bgm_2", "asset/sound/main_bgm2.mp3");
+    this.load.audio("gameover_bgm", "asset/sound/gameover_bgm.mp3");
   }
 
   create() {
@@ -32,6 +34,11 @@ export default class GameOverScene extends Phaser.Scene {
 
       repeat: 0,
     });
+    const bgm: any = this.sound.add("gameover_bgm");
+    bgm.play();
+    bgm.setLoop(true);
+    bgm.setVolume(0.2);
+    const bgm2: any = this.sound.add("main_bgm_2");
     const screenWidth = this.cameras.main.width;
     const screenHeight = this.cameras.main.height;
     const score = this.data.get("score");
@@ -102,8 +109,10 @@ export default class GameOverScene extends Phaser.Scene {
       () => {
         this.time.delayedCall(1000, () => {
           if (selectedMenu === 0) {
+            bgm.stop();
             this.scene.start("gameStartScene", {
               fadeIn: true,
+              bgm2,
             });
           }
 
@@ -111,6 +120,7 @@ export default class GameOverScene extends Phaser.Scene {
             this.scene.start("enterRankScene", {
               fadeIn: true,
               score: this.data.get("score"),
+              bgm,
             });
           }
         });

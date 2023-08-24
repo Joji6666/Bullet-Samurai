@@ -23,7 +23,8 @@ export function slash(scene: Phaser.Scene, player: any) {
 
   if (playerMoveState !== "death" && !isCoolDown) {
     scene.data.set("playerMoveState", "attack");
-
+    const swingSound = scene.data.get("swingSound");
+    swingSound.play();
     player.anims.play("samurai_attack", true);
 
     player.on("animationcomplete-samurai_attack", () => {

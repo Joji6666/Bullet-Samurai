@@ -42,9 +42,11 @@ export default class EnterRankScene extends Phaser.Scene {
   init(data: any) {
     const score = data.score;
     this.data.set("score", score);
+    this.data.set("gameoverBgm", data.bgm);
   }
 
   preload() {
+    this.load.audio("main_bgm_2", "asset/sound/main_bgm2.mp3");
     LETTERS.forEach((letter) => {
       this.load.spritesheet(letter.key, `asset/ranking/${letter.value}.png`, {
         frameWidth: 32,
@@ -70,6 +72,7 @@ export default class EnterRankScene extends Phaser.Scene {
   }
 
   create() {
+    const bgm2: any = this.sound.add("main_bgm_2");
     this.anims.create({
       key: "focus_box",
 
@@ -217,6 +220,8 @@ export default class EnterRankScene extends Phaser.Scene {
           score,
           name: enterText.toUpperCase(),
         }).then((result) => {
+          const gameoverBgm = this.data.get("gameoverBgm");
+          gameoverBgm.stop();
           this.cameras.main.fadeOut(1000, 0, 0, 0);
         });
       }
@@ -228,6 +233,7 @@ export default class EnterRankScene extends Phaser.Scene {
         this.time.delayedCall(1000, () => {
           this.scene.start("gameStartScene", {
             fadeIn: true,
+            bgm2,
           });
         });
       }

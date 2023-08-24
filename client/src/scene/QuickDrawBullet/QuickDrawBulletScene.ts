@@ -22,8 +22,8 @@ import CatAnimations from "./addons/char/cat/CatAnimations";
 
 const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
-const minInterval = 3000;
-const maxInterval = 6000;
+const minInterval = 2600;
+const maxInterval = 4500;
 
 const afterImageColors = [
   "0xFF0000", // 빨강
@@ -44,6 +44,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
   }
 
   init(data: any) {
+    data.bgm2.stop();
     bulletSpeed.value = -2400;
     this.data.set("isBulletTime", false);
     this.data.set("aimOn", false);
@@ -154,7 +155,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     const comboText = this.add.text(950, 185, ``, {
       fontSize: "32px",
-      fontFamily: "InfiniteFont", // CSS에서 정의한 font-family 이름 사용
+      fontFamily: "InfiniteFont",
       color: "cyan",
     });
 
@@ -289,7 +290,7 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
       player.body.setSize(player.width * attackAround, player.height * 0.4);
 
-      if (isBulletTime && player.body.offset.x < 68) {
+      if (isBulletTime && player.body.offset.x < 50) {
         player.isSwordOut = true;
       }
 

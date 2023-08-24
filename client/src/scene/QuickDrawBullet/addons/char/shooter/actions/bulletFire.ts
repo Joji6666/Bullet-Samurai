@@ -25,6 +25,8 @@ export function bulletFire(
     }, 1000);
     return;
   }
+  const gunSound = scene.data.get("gunSound");
+  gunSound.play();
 
   scene.cameras.main.setScroll(
     scene.cameras.main.scrollX + 5,
@@ -47,8 +49,6 @@ export function bulletFire(
     )
     .setScale(0.4);
 
-  const gunSound = scene.data.get("gunSound");
-  gunSound.play();
   bulletParticle.scene = scene;
   bulletSpeed.value = bulletSpeed.value - 25;
 

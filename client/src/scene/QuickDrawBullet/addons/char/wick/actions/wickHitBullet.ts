@@ -19,7 +19,8 @@ export function wickHitBullet(scene: Phaser.Scene) {
     const wickVestHitEffect = scene.physics.add
       .sprite(wick.x - 15, wick.y, "wick_vest_hit")
       .setScale(0.5);
-
+    const vestHitSound = scene.data.get("vestHitSound");
+    vestHitSound.play();
     wickVestHitEffect.anims.play("wick_vest_hit", true);
 
     wickVestHitEffect.on("animationcomplete-wick_vest_hit", () => {
@@ -115,15 +116,21 @@ export function wickHitBullet(scene: Phaser.Scene) {
         playingBgm.stop();
         playRendomBgm(scene);
         const shooter = scene.physics.add
-          .sprite(1100, 655, `shooter_idle`)
+          .sprite(1300, 655, `shooter_idle`)
           .setName("shooter")
           .setScale(2);
+        shooter.anims.play("shooter_run", true);
         scene.data.set("shooter", shooter);
         shooter.setFlipX(true);
-        scene.data.set("shooterMoveState", "idle");
-        wick.destroy();
-        scene.data.set("isWickDead", true);
-        newWickLifeBar.destroy();
+        shooter.setVelocityX(-200);
+        setTimeout(() => {
+          shooter.setVelocityX(0);
+          scene.data.set("shooterMoveState", "idle");
+          shooter.anims.play("shooter_idle", true);
+          wick.destroy();
+          scene.data.set("isWickDead", true);
+          newWickLifeBar.destroy();
+        }, 1000);
       }, 1000);
     });
   }

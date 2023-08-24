@@ -13,5 +13,7 @@ export default class PreloadSound {
     scene.load.audio("bgm_5", "asset/sound/bgm_5.mp3");
     scene.load.audio("bgm_6", "asset/sound/bgm_6.mp3");
     scene.load.audio("wick_bgm", "asset/sound/wick_bgm.mp3");
+    scene.load.audio("swing_sound", "asset/sound/swing_sound.mp3");
+    scene.load.audio("vest_hit_sound", "asset/sound/vest_hit_sound.mp3");
   }
 }

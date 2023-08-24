@@ -95,6 +95,7 @@ export function hitBullet(
 
   if (playerMoveState !== "attack" || !player.isSwordOut) {
     scene.data.set("combo", 0);
+    scene.data.set("isCoolDown", false);
     comboText.setText("");
     bullet.destroy();
     player.setVelocityY(0);

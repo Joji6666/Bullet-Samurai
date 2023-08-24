@@ -7,8 +7,12 @@ export default class GameStartScene extends Phaser.Scene {
     super("gameStartScene");
   }
 
-  init() {
+  init(data: any) {
     selectedMenu = 0;
+    if (data.bgm2) {
+      data.bgm2.setVolume(0.1);
+      data.bgm2.play();
+    }
   }
 
   preload() {
@@ -29,11 +33,16 @@ export default class GameStartScene extends Phaser.Scene {
     this.load.audio("slash_sound", "asset/sound/slash.wav");
     this.load.audio("yoo", "asset/sound/yoo.mp3");
     this.load.audio("main_bgm", "asset/sound/main_bgm.mp3");
+    this.load.audio("main_bgm_2", "asset/sound/main_bgm2.mp3");
   }
 
   create() {
     const bgm: any = this.sound.add("main_bgm");
     bgm.setVolume(0.2);
+
+    const bgm2: any = this.sound.add("main_bgm_2");
+    bgm2.setVolume(0.1);
+    bgm2.play();
 
     this.anims.create({
       key: "samurai_fall",
@@ -109,7 +118,7 @@ export default class GameStartScene extends Phaser.Scene {
     this.input.keyboard.once("keydown-SPACE", () => {
       if (selectedMenu === 0) {
         const slashSound = this.sound.add("slash_sound");
-
+        bgm2.stop();
         slashSound.play();
         const slash = this.physics.add
           .sprite(title.x, title.y - 560, `slash`)
@@ -167,15 +176,16 @@ export default class GameStartScene extends Phaser.Scene {
             this.scene.start("quickDrawBulletScene", {
               fadeIn: true,
               mainBgm: bgm,
+              bgm2,
             });
           }
 
           if (selectedMenu === 1) {
-            this.scene.start("tutorialScene", { fadeIn: true });
+            this.scene.start("tutorialScene", { fadeIn: true, bgm2 });
           }
 
           if (selectedMenu === 2) {
-            this.scene.start("rankingScene", { fadeIn: true });
+            this.scene.start("rankingScene", { fadeIn: true, bgm2 });
           }
         });
       }

@@ -12,5 +12,9 @@ export default class AddSound {
     scene.data.set("backgroundMusic", backgroundMusic);
     const deathSound = scene.sound.add("death_sound");
     scene.data.set("deathSound", deathSound);
+    const swingSound = scene.sound.add("swing_sound");
+    scene.data.set("swingSound", swingSound);
+    const vestHitSound = scene.sound.add("vest_hit_sound");
+    scene.data.set("vestHitSound", vestHitSound);
   }
 }

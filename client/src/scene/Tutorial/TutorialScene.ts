@@ -28,13 +28,21 @@ export default class TutorialScene extends Phaser.Scene {
     this.load.image("background_6", "asset/tutorial/6.png");
     this.load.image("background_7", "asset/tutorial/7.png");
     this.load.image("background_8", "asset/tutorial/8.png");
+    this.load.audio("tutorial_bgm", "asset/sound/tutorial_bgm.mp3");
+    this.load.audio("main_bgm_2", "asset/sound/main_bgm2.mp3");
   }
 
-  init() {
+  init(data: any) {
     tutorialCount = 1;
+    data.bgm2.stop();
   }
 
   create() {
+    const bgm: any = this.sound.add("tutorial_bgm");
+    bgm.play();
+    bgm.setLoop(true);
+    bgm.setVolume(0.2);
+    const bgm2: any = this.sound.add("main_bgm_2");
     const screenWidth = this.cameras.main.width;
     const screenHeight = this.cameras.main.height;
     this.add.image(screenWidth / 2, 350, "background_1").setScale(0.5);
@@ -97,7 +105,8 @@ export default class TutorialScene extends Phaser.Scene {
       () => {
         this.time.delayedCall(1000, () => {
           this.input.keyboard.off;
-          this.scene.start("gameStartScene", { fadeIn: true });
+          bgm.stop();
+          this.scene.start("gameStartScene", { fadeIn: true, bgm2 });
         });
       }
     );
