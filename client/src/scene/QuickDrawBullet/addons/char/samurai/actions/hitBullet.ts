@@ -19,6 +19,8 @@ export function hitBullet(
   const combo = scene.data.get("combo");
   const comboText = scene.data.get("comboText");
 
+  console.log(isCrouchBullet);
+
   if (playerMoveState === "attack" && player.isSwordOut && !isCrouchBullet) {
     const slashHit = scene.physics.add
       .sprite(bullet.x, bullet.y, `slash_hit`)
@@ -93,7 +95,7 @@ export function hitBullet(
     });
   }
 
-  if (playerMoveState !== "attack" || !player.isSwordOut) {
+  if (playerMoveState !== "attack" || !player.isSwordOut || isCrouchBullet) {
     scene.data.set("combo", 0);
     scene.data.set("isCoolDown", false);
     comboText.setText("");

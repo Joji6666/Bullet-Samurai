@@ -372,7 +372,6 @@ export default class QuickDrawBulletScene extends Phaser.Scene {
 
     if (bullet) {
       if (bullet.x < 0 && bullet.body?.velocity?.x) {
-        console.log("work");
         bullet.destroy();
         this.data.set("isBulletDestroy", true);
         this.data.set("successHit", false);
