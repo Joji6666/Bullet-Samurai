@@ -22,7 +22,7 @@ import CatAnimations from "./addons/char/cat/CatAnimations";
 
 const bulletSpeed = { value: -2400 };
 let nextBulletTime = 0;
-const minInterval = 2600;
+const minInterval = 3000;
 const maxInterval = 4500;
 
 const afterImageColors = [

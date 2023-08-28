@@ -12,6 +12,7 @@ export default class GameStartScene extends Phaser.Scene {
     if (data.bgm2) {
       data.bgm2.setVolume(0.1);
       data.bgm2.play();
+      this.data.set("oldBgm", data.bgm2);
     }
   }
 
@@ -117,8 +118,14 @@ export default class GameStartScene extends Phaser.Scene {
 
     this.input.keyboard.once("keydown-SPACE", () => {
       if (selectedMenu === 0) {
+        const oldBgm = this.data.get("oldBgm");
+
+        if (oldBgm) {
+          oldBgm.stop();
+        }
         const slashSound = this.sound.add("slash_sound");
         bgm2.stop();
+
         slashSound.play();
         const slash = this.physics.add
           .sprite(title.x, title.y - 560, `slash`)

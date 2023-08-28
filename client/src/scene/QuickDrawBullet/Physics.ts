@@ -6,7 +6,7 @@ export default class Physics {
     const bullet = scene.physics.add.group({
       allowGravity: false,
     });
-    const wick = scene.data.get("wick");
+   
     scene.data.set("bullets", bullet);
 
     scene.physics.add.overlap(
@@ -16,12 +16,6 @@ export default class Physics {
       null,
       scene
     );
-    scene.physics.add.overlap(
-      bullet,
-      wick,
-      () => wickHitBullet(scene),
-      null,
-      scene
-    );
+  
   }
 }

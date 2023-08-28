@@ -21,8 +21,6 @@ export function autoBulletFire(
           shooter.anims.play("shooter_crouch_aim", true);
           shooter.on("animationcomplete-shooter_crouch_aim", () => {
             shooter.anims.play("shooter_crouch_shoot", true);
-            const gunSound = scene.data.get("gunSound");
-            gunSound.play();
 
             bulletFire(shooter, scene, bulletSpeed);
             shooter.on("animationcomplete-shooter_crouch_shoot", () => {
